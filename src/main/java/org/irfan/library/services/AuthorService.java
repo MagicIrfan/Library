@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthorService {
@@ -24,8 +25,11 @@ public class AuthorService {
         return authorsDTO;
     }
 
-    public GetAuthorDTO getAuthorByName(String name){
+    public Optional<GetAuthorDTO> getAuthorByName(String name) {
         Author author = authorRepository.findByName(name);
-        return new GetAuthorDTO(author.getName());
+        if (author == null) {
+            return Optional.empty(); // Aucun auteur trouvé
+        }
+        return Optional.of(new GetAuthorDTO(author.getName()));
     }
 }
