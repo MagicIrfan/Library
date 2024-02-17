@@ -1,4 +1,4 @@
-package org.irfan.library;
+package org.irfan.library.controllers;
 
 import org.irfan.library.dto.GetAuthorDTO;
 import org.irfan.library.services.AuthorService;
