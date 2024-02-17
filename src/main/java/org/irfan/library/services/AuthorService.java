@@ -9,27 +9,29 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthorService {
 
+    private final AuthorRepository authorRepository;
+
+    // Constructor injection is recommended over field injection
     @Autowired
-    private AuthorRepository authorRepository;
-    public List<GetAuthorDTO> getAllAuthors()
-    {
-        List<GetAuthorDTO> authorsDTO = new ArrayList<>();
-        List<Author> authors = authorRepository.findAll();
-        for(Author author : authors){
-            authorsDTO.add(new GetAuthorDTO(author.getName()));
-        }
-        return authorsDTO;
+    public AuthorService(AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
+    }
+
+    public List<GetAuthorDTO> getAllAuthors() {
+        // Use Stream API to map Author objects to GetAuthorDTO and collect to list
+        return authorRepository.findAll().stream()
+                .map(author -> new GetAuthorDTO(author.getName()))
+                .collect(Collectors.toList());
     }
 
     public Optional<GetAuthorDTO> getAuthorByName(String name) {
-        Author author = authorRepository.findByName(name);
-        if (author == null) {
-            return Optional.empty(); // Aucun auteur trouvé
-        }
-        return Optional.of(new GetAuthorDTO(author.getName()));
+        // Simplify the retrieval of an author using Optional.map
+        return Optional.ofNullable(authorRepository.findByName(name))
+                .map(author -> new GetAuthorDTO(author.getName()));
     }
 }
