@@ -1,5 +1,6 @@
 package org.irfan.library;
 
+import org.irfan.library.enums.RoleEnum;
 import org.irfan.library.filters.JwtTokenAuthenticationFilter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,8 @@ public class SpringSecurityConfig{
                         authorizeRequests
                                 .requestMatchers("/signup").permitAll()
                                 .requestMatchers("/login").permitAll()
+                                .requestMatchers("/admin").hasRole(RoleEnum.ADMIN.name())
+                                .requestMatchers("/user").hasAnyRole(RoleEnum.ADMIN.name(),RoleEnum.USER.name())
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->

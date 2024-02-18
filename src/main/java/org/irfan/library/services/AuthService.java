@@ -1,8 +1,11 @@
 package org.irfan.library.services;
 
+import org.irfan.library.Model.Role;
 import org.irfan.library.Model.User;
 import org.irfan.library.components.JwtTokenProvider;
 import org.irfan.library.dao.UserRepository;
+import org.irfan.library.dto.RoleDTO;
+import org.irfan.library.enums.RoleEnum;
 import org.irfan.library.exception.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,10 +32,13 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private JwtTokenProvider tokenProvider;
+    @Autowired
+    private RoleService roleService;
 
     @Transactional
     public void signUp(String username, String email, String password){
-        User user = new User(username,email,bCryptPasswordEncoder.encode(password));
+        Role role = roleService.getRole(RoleEnum.USER.toString());
+        User user = new User(username,email,bCryptPasswordEncoder.encode(password),role);
         if(userExists(username,email)){
             throw new UserAlreadyExistsException("L'utilisateur existe déjà");
         }

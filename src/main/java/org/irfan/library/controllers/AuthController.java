@@ -3,9 +3,12 @@ package org.irfan.library.controllers;
 import org.irfan.library.components.JwtTokenProvider;
 import org.irfan.library.dao.UserRepository;
 import org.irfan.library.dto.LoginRequest;
+import org.irfan.library.dto.RoleDTO;
 import org.irfan.library.dto.SignupRequest;
+import org.irfan.library.enums.RoleEnum;
 import org.irfan.library.response.JwtResponse;
 import org.irfan.library.services.AuthService;
+import org.irfan.library.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +24,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
