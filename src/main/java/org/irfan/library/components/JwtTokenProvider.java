@@ -17,13 +17,12 @@ public class JwtTokenProvider {
     private int jwtExpirationMs;
 
     public String createToken(String username) {
-        // Construisez le token JWT
         return Jwts.builder()
-                .setSubject(username) // Définissez le sujet du token (nom d'utilisateur)
-                .setIssuedAt(new Date()) // Date d'émission du token
-                .setExpiration(new Date(new Date().getTime() + jwtExpirationMs)) // Date d'expiration
-                .signWith(SignatureAlgorithm.HS512, jwtSecret) // Algorithme de signature et clé secrète
-                .compact(); // Construisez le JWT et sérialisez-le en une chaîne compacte
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
     }
 
     public String getUsernameFromToken(String token) {
@@ -38,17 +37,15 @@ public class JwtTokenProvider {
     // Méthode pour valider le token JWT
     public boolean validateToken(String token) {
         try {
-            // Parse le token.
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(jwtSecret)
                     .parseClaimsJws(token);
 
-            // Vérifie si le token a expiré.
             if (claims.getBody().getExpiration().before(new Date())) {
-                return false; // Le token a expiré.
+                return false;
             }
 
-            return true; // Le token est valide.
+            return true;
         } catch (SignatureException e) {
             // Logique de gestion des exceptions pour une signature JWT invalide.
             // Vous pouvez logger cette exception et/ou traiter selon les besoins de votre application.

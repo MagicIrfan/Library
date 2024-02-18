@@ -14,10 +14,6 @@ import java.util.Optional;
 
 @RestController
 public class HelloWorldController {
-
-    @Autowired
-    private AuthorService authorService;
-
     @GetMapping("/hello")
     public String hello() {
         return "Welcome, User";
@@ -31,17 +27,5 @@ public class HelloWorldController {
     @GetMapping("/admin")
     public String getAdmin() {
         return "Welcome, Admin";
-    }
-
-    @GetMapping("/authors")
-    public List<GetAuthorDTO> getAllAuthors() {
-        return authorService.getAllAuthors();
-    }
-
-    @GetMapping("/author")
-    public ResponseEntity<?> getAuthorByName(@RequestParam String name) {
-        return authorService.getAuthorByName(name)
-                .map(author -> ResponseEntity.ok().body(author))  // 200 OK with body
-                .orElse(ResponseEntity.notFound().build());  // 404 Not Found without body
     }
 }
