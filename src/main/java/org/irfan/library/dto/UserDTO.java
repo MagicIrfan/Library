@@ -11,16 +11,14 @@ import java.util.List;
 public class UserDTO implements UserDetails {
     private String username;
     private String password;
-    private List<GrantedAuthority> grantedAuthorities;
-    public UserDTO(String userName, String password, List<GrantedAuthority> grantedAuthorities){
+    public UserDTO(String userName, String password){
         this.username = userName;
         this.password = password;
-        this.grantedAuthorities = grantedAuthorities;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return grantedAuthorities;
+        return null;
     }
 
     @Override

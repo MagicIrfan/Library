@@ -18,6 +18,11 @@ public class HelloWorldController {
     @Autowired
     private AuthorService authorService;
 
+    @GetMapping("/hello")
+    public String hello() {
+        return "Welcome, User";
+    }
+
     @GetMapping("/user")
     public String getUser() {
         return "Welcome, User";
