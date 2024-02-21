@@ -43,8 +43,8 @@ public class SpringSecurityConfig{
                         authorizeRequests
                                 .requestMatchers("/signup").permitAll()
                                 .requestMatchers("/login").permitAll()
-                                .requestMatchers("/admin").hasRole(RoleEnum.ADMIN.name())
-                                .requestMatchers("/user").hasAnyRole(RoleEnum.ADMIN.name(),RoleEnum.USER.name())
+                                .requestMatchers("/admin").hasAuthority(RoleEnum.ADMIN.name())
+                                .requestMatchers("/user").hasAnyAuthority(RoleEnum.ADMIN.name(),RoleEnum.USER.name())
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->

@@ -27,24 +27,10 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         final User user = userRepository.findByUsername(username);
         if (user != null) {
-            // Pas besoin d'encoder de nouveau le mot de passe ici
-            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>()); // Assurez-vous que les rôles/autorisations sont correctement gérés ici
+            List<SimpleGrantedAuthority> authorites = List.of(new SimpleGrantedAuthority(user.getRole().getName()));
+            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorites); // Assurez-vous que les rôles/autorisations sont correctement gérés ici
         } else {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
-    }
-
-    private Collection<? extends GrantedAuthority> getAuthorities(
-            Collection<Role> roles) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Role role: roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-            authorities.addAll(role.getPrivileges()
-                    .stream()
-                    .map(p -> new SimpleGrantedAuthority(p.getName()))
-                    .collect(Collectors.toList()));
-        }
-
-        return authorities;
     }
 }
