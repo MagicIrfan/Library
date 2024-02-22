@@ -1,6 +1,7 @@
 package org.irfan.library.Model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,14 +15,17 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column
+    @NotEmpty
     private String title;
 
-    @Column(nullable = false)
+    @Column
+    @NotEmpty
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
+    @NotEmpty
     private Author author;
 
     @ManyToOne(fetch = FetchType.LAZY)

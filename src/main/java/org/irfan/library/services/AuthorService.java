@@ -25,13 +25,13 @@ public class AuthorService {
     public List<GetAuthorDTO> getAllAuthors() {
         // Use Stream API to map Author objects to GetAuthorDTO and collect to list
         return authorRepository.findAll().stream()
-                .map(author -> new GetAuthorDTO(author.getName()))
+                .map(author -> new GetAuthorDTO(author.getFirstName()))
                 .collect(Collectors.toList());
     }
 
     public Optional<GetAuthorDTO> getAuthorByName(String name) {
         // Simplify the retrieval of an author using Optional.map
-        return Optional.ofNullable(authorRepository.findByName(name))
-                .map(author -> new GetAuthorDTO(author.getName()));
+        return Optional.ofNullable(authorRepository.findByFirstName(name))
+                .map(author -> new GetAuthorDTO(author.getFirstName()));
     }
 }

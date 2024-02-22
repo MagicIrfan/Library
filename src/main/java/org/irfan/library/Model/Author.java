@@ -1,8 +1,10 @@
 package org.irfan.library.Model;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -12,7 +14,12 @@ public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
-    @NotNull
-    private String name;
+    @Column
+    @NotEmpty
+    private String firstName;
+    @Column
+    @NotEmpty
+    private String lastName;
+    @OneToMany(mappedBy = "author")
+    private List<Book> books;
 }
