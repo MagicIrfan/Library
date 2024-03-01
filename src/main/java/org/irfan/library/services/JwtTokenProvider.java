@@ -1,4 +1,4 @@
-package org.irfan.library.components;
+package org.irfan.library.services;
 
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,24 +34,13 @@ public class JwtTokenProvider {
         return claims.getSubject();
     }
 
-    // Méthode pour valider le token JWT
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(jwtSecret)
                     .parseClaimsJws(token);
-
-            if (claims.getBody().getExpiration().before(new Date())) {
-                return false;
-            }
-
-            return true;
-        } catch (SignatureException e) {
-            // Logique de gestion des exceptions pour une signature JWT invalide.
-            // Vous pouvez logger cette exception et/ou traiter selon les besoins de votre application.
-            return false; // Le token est invalide.
+            return claims.getBody().getExpiration().after(new Date());
         } catch (Exception e) {
-            // Gérer d'autres exceptions qui pourraient survenir lors du parsing du token.
             return false;
         }
     }

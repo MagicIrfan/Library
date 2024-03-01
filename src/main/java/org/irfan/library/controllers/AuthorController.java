@@ -18,13 +18,7 @@ public class AuthorController {
 
     @GetMapping("/all")
     public List<GetAuthorDTO> getAllAuthors() {
-        System.out.println("prout");
         return authorService.getAllAuthors();
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        return "prout";
     }
 
     @GetMapping("/")

@@ -2,9 +2,7 @@ package org.irfan.library.services;
 
 import org.irfan.library.Model.Role;
 import org.irfan.library.Model.User;
-import org.irfan.library.components.JwtTokenProvider;
 import org.irfan.library.dao.UserRepository;
-import org.irfan.library.dto.RoleDTO;
 import org.irfan.library.enums.RoleEnum;
 import org.irfan.library.exception.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

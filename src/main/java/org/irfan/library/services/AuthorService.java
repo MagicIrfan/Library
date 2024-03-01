@@ -16,22 +16,19 @@ public class AuthorService {
 
     private final AuthorRepository authorRepository;
 
-    // Constructor injection is recommended over field injection
     @Autowired
     public AuthorService(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
     }
 
     public List<GetAuthorDTO> getAllAuthors() {
-        // Use Stream API to map Author objects to GetAuthorDTO and collect to list
         return authorRepository.findAll().stream()
-                .map(author -> new GetAuthorDTO(author.getFirstName()))
+                .map(author -> new GetAuthorDTO(author.getFirstname()))
                 .collect(Collectors.toList());
     }
 
     public Optional<GetAuthorDTO> getAuthorByName(String name) {
-        // Simplify the retrieval of an author using Optional.map
-        return Optional.ofNullable(authorRepository.findByFirstName(name))
-                .map(author -> new GetAuthorDTO(author.getFirstName()));
+        return Optional.ofNullable(authorRepository.findByFirstname(name))
+                .map(author -> new GetAuthorDTO(author.getFirstname()));
     }
 }

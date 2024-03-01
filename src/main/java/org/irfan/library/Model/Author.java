@@ -16,10 +16,10 @@ public class Author {
     private Long id;
     @Column
     @NotEmpty
-    private String firstName;
+    private String firstname;
     @Column
     @NotEmpty
-    private String lastName;
+    private String lastname;
     @OneToMany(mappedBy = "author")
     private List<Book> books;
 }
