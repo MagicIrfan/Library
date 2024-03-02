@@ -28,7 +28,7 @@ public class AuthorService {
     }
 
     public Optional<GetAuthorDTO> getAuthorByName(String name) {
-        return Optional.ofNullable(authorRepository.findByFirstname(name))
+        return authorRepository.findByFirstname(name)
                 .map(author -> new GetAuthorDTO(author.getFirstname()));
     }
 }

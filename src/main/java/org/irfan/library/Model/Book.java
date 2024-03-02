@@ -15,17 +15,12 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(unique = true)
     @NotEmpty
     private String title;
 
-    @Column
-    @NotEmpty
-    private String imageUrl;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
-    @NotEmpty
     private Author author;
 
     @ManyToOne(fetch = FetchType.LAZY)

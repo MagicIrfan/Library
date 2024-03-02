@@ -15,7 +15,6 @@ public class Type {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
-    @NotEmpty
+    @Column(unique = true)
     private String name;
 }

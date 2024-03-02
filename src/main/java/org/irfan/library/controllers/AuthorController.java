@@ -24,7 +24,7 @@ public class AuthorController {
     @GetMapping("/")
     public ResponseEntity<?> getAuthor(@ModelAttribute GetAuthorRequest request) {
         return authorService.getAuthorByName(request.getFirstName())
-                .map(author -> ResponseEntity.ok().body(author))  // 200 OK with body
-                .orElse(ResponseEntity.notFound().build());  // 404 Not Found without body
+                .map(author -> ResponseEntity.ok().body(author))
+                .orElse(ResponseEntity.notFound().build());
     }
 }

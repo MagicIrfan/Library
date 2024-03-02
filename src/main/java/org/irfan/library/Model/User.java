@@ -20,26 +20,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @Column
-    @NotEmpty
-    @Size(min = 5, max = 16, message = "Le pseudo doit contenir entre 5 et 16 caractères")
+    @Column(unique = true)
     private String username;
 
-    @Column
-    @NotEmpty
-    @Email(message="Merci de saisir un e-mail valide")
+    @Column(unique = true)
     private String email;
 
     @Column
-    @NotEmpty
-    @Size(min = 5, message = "Le mot de passe doit contenir au moins 5 caractères")
     private String password;
 
-    public User(String username, String email, String password, Role role){
+    public User(Role role, String username, String email, String password){
         this.username = username;
         this.email = email;
         this.password = password;

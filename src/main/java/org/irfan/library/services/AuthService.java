@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -34,12 +35,14 @@ public class AuthService {
 
     @Transactional
     public void signUp(String username, String email, String password){
-        Role role = roleService.getRole(RoleEnum.USER.toString());
-        User user = new User(username,email,bCryptPasswordEncoder.encode(password),role);
-        if(userExists(username,email)){
-            throw new UserAlreadyExistsException("L'utilisateur existe déjà");
+        Optional<Role> role = roleService.getRole(RoleEnum.USER.toString());
+        if(role.isPresent()){
+            Optional<User> user = Optional.of(new User(role.get(), username, email, bCryptPasswordEncoder.encode(password)));
+            if(userExists(username,email)){
+                throw new UserAlreadyExistsException("L'utilisateur existe déjà");
+            }
+            userRepository.save(user.get());
         }
-        userRepository.save(user);
     }
 
     public String login(String username, String password) throws Exception {
