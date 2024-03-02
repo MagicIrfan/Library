@@ -12,9 +12,8 @@ import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<Object> handleUserAlreadyExists(UserAlreadyExistsException ex) {
+    @ExceptionHandler(DuplicateDataException.class)
+    public ResponseEntity<Object> handleDataAlreadyExists(DuplicateDataException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 

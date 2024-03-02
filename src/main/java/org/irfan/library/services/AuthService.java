@@ -4,7 +4,7 @@ import org.irfan.library.Model.Role;
 import org.irfan.library.Model.User;
 import org.irfan.library.dao.UserRepository;
 import org.irfan.library.enums.RoleEnum;
-import org.irfan.library.exception.UserAlreadyExistsException;
+import org.irfan.library.exception.DuplicateDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -39,7 +38,7 @@ public class AuthService {
         if(role.isPresent()){
             Optional<User> user = Optional.of(new User(role.get(), username, email, bCryptPasswordEncoder.encode(password)));
             if(userExists(username,email)){
-                throw new UserAlreadyExistsException("L'utilisateur existe déjà");
+                throw new DuplicateDataException("L'utilisateur existe déjà");
             }
             userRepository.save(user.get());
         }

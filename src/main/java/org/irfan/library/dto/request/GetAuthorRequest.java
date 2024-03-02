@@ -1,4 +1,4 @@
-package org.irfan.library.dto;
+package org.irfan.library.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;

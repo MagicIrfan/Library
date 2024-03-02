@@ -45,10 +45,11 @@ public class SpringSecurityConfig{
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/admin").hasAuthority(RoleEnum.ADMIN.name())
                                 .requestMatchers("/user").hasAnyAuthority(RoleEnum.ADMIN.name(),RoleEnum.USER.name())
+                                .requestMatchers("/author").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Utiliser une politique de session sans état
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 

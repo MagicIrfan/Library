@@ -2,8 +2,6 @@ package org.irfan.library.services;
 
 import org.irfan.library.Model.Role;
 import org.irfan.library.dao.RoleRepository;
-import org.irfan.library.dto.GetAuthorDTO;
-import org.irfan.library.dto.RoleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

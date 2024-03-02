@@ -1,30 +1,62 @@
 package org.irfan.library.controllers;
 
-import org.irfan.library.dto.GetAuthorDTO;
-import org.irfan.library.dto.GetAuthorRequest;
+import jakarta.validation.Valid;
+import org.irfan.library.dto.*;
+import org.irfan.library.dto.request.CreateAuthorRequest;
+import org.irfan.library.dto.response.ErrorMessageResponse;
+import org.irfan.library.dto.response.OKMessageResponse;
 import org.irfan.library.services.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
-@RestController()
+@RestController
 @RequestMapping("/author")
+@CrossOrigin
 public class AuthorController {
 
+    private final AuthorService authorService;
     @Autowired
-    private AuthorService authorService;
-
-    @GetMapping("/all")
-    public List<GetAuthorDTO> getAllAuthors() {
-        return authorService.getAllAuthors();
+    public AuthorController(AuthorService authorService){
+        this.authorService = authorService;
     }
 
-    @GetMapping("/")
-    public ResponseEntity<?> getAuthor(@ModelAttribute GetAuthorRequest request) {
-        return authorService.getAuthorByName(request.getFirstName())
-                .map(author -> ResponseEntity.ok().body(author))
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/all")
+    public ResponseEntity<List<AuthorDTO>> getAllAuthors() {
+        List<AuthorDTO> authors = authorService.getAllAuthors();
+        return !authors.isEmpty() ? ResponseEntity.ok().body(authors) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping()
+    public ResponseEntity<?> getAuthor(
+            @RequestParam(value = "firstname", required = false) Optional<String> firstname,
+            @RequestParam(value = "lastname", required = false) Optional<String> lastname) {
+
+        boolean firstnameIsPresent = firstname.isPresent() && !firstname.get().isEmpty();
+        boolean lastnameIsPresent = lastname.isPresent() && !lastname.get().isEmpty();
+
+        if (firstnameIsPresent && lastnameIsPresent) {
+            return authorService.getAuthorByFirstNameAndLastName(firstname.get(), lastname.get())
+                    .map(author -> ResponseEntity.ok().body(author))
+                    .orElse(ResponseEntity.notFound().build());
+        } else if (firstnameIsPresent) {
+            return authorService.getAuthorByFirstName(firstname.get())
+                    .map(author -> ResponseEntity.ok().body(author))
+                    .orElse(ResponseEntity.notFound().build());
+        } else if (lastnameIsPresent) {
+            return authorService.getAuthorByLastName(lastname.get())
+                    .map(author -> ResponseEntity.ok().body(author))
+                    .orElse(ResponseEntity.notFound().build());
+        }
+        return ResponseEntity.badRequest().body(new ErrorMessageResponse<>("Please provide at least a first name or a last name."));
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> createAuthor(@Valid @RequestBody CreateAuthorRequest request){
+        authorService.createAuthor(request);
+        return ResponseEntity.ok(new OKMessageResponse<>("L'auteur " + request.getFirstname() + " " + request.getLastname() + " a été crée"));
     }
 }
