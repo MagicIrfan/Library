@@ -1,7 +1,6 @@
 package org.irfan.library.services;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import org.irfan.library.Model.User;
 import org.irfan.library.dao.UserRepository;
 import org.irfan.library.dto.UserDTO;
@@ -12,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;

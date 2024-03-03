@@ -1,12 +1,10 @@
 package org.irfan.library.controllers;
 
 import jakarta.validation.Valid;
-import org.irfan.library.dto.BookDTO;
 import org.irfan.library.dto.UserDTO;
 import org.irfan.library.dto.request.EditUserRequest;
 import org.irfan.library.dto.response.OKMessageResponse;
 import org.irfan.library.services.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/v1/users")
+@CrossOrigin
 public class UserController {
 
     private final UserService userService;

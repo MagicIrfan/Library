@@ -1,7 +1,6 @@
 package org.irfan.library.dao;
 
 import org.irfan.library.Model.Author;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

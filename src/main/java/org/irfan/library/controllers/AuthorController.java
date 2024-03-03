@@ -74,9 +74,15 @@ public class AuthorController {
         return ResponseEntity.ok(new OKMessageResponse<>("L'auteur est supprimé"));
     }
 
-    @PostMapping("/{id}/addBook")
+    @PostMapping("/{id}/books")
     public ResponseEntity<?> addBookToAuthor(@PathVariable Integer id, @Valid @RequestBody AddBookToAuthorRequest request){
         authorService.addBookToAuthor(id,request);
         return ResponseEntity.ok(new OKMessageResponse<>("Le livre a été ajouté"));
+    }
+
+    @GetMapping("/{id}/books")
+    public ResponseEntity<List<BookWithoutAuthorDTO>> getBooksOfAuthor(@PathVariable Integer id){
+        List<BookWithoutAuthorDTO> books = authorService.getBooksOfAuthor(id);
+        return ResponseEntity.ok(books);
     }
 }

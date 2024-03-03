@@ -1,11 +1,6 @@
 package org.irfan.library.controllers;
 
-import jakarta.persistence.Id;
 import jakarta.validation.Valid;
-import org.irfan.library.Model.Author;
-import org.irfan.library.Model.Type;
-import org.irfan.library.dao.AuthorRepository;
-import org.irfan.library.dao.BookTypeRepository;
 import org.irfan.library.dto.BookDTO;
 import org.irfan.library.dto.request.CreateBookRequest;
 import org.irfan.library.dto.request.EditBookRequest;

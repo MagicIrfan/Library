@@ -1,7 +1,6 @@
 package org.irfan.library.dto.request;
 
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 

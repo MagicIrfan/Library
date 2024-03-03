@@ -1,7 +1,6 @@
 package org.irfan.library.services;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import org.irfan.library.Model.Author;
 import org.irfan.library.Model.Book;
 import org.irfan.library.Model.Type;
@@ -9,9 +8,9 @@ import org.irfan.library.dao.AuthorRepository;
 import org.irfan.library.dao.BookRepository;
 import org.irfan.library.dao.BookTypeRepository;
 import org.irfan.library.dto.AuthorWithBooksDTO;
+import org.irfan.library.dto.BookWithoutAuthorDTO;
 import org.irfan.library.dto.request.AddBookToAuthorRequest;
 import org.irfan.library.dto.request.CreateAuthorRequest;
-import org.irfan.library.dto.AuthorDTO;
 import org.irfan.library.dto.request.EditAuthorRequest;
 import org.irfan.library.exception.DuplicateDataException;
 import org.modelmapper.ModelMapper;
@@ -19,12 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class AuthorService {
@@ -110,5 +106,12 @@ public class AuthorService {
             throw new DuplicateDataException("Ce livre existe déjà !");
         }
         bookRepository.save(new Book(request.getTitle(),author,bookType));
+    }
+
+    public List<BookWithoutAuthorDTO> getBooksOfAuthor(Integer id) {
+        return bookRepository.findAllByAuthor_Id(Long.valueOf(id))
+                .stream()
+                .map(book -> modelMapper.map(book, BookWithoutAuthorDTO.class))
+                .toList();
     }
 }
