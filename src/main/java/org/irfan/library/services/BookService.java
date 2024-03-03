@@ -1,5 +1,6 @@
 package org.irfan.library.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.irfan.library.Model.Author;
 import org.irfan.library.Model.Book;
 import org.irfan.library.Model.Type;
@@ -9,6 +10,8 @@ import org.irfan.library.dao.BookTypeRepository;
 import org.irfan.library.dto.AuthorDTO;
 import org.irfan.library.dto.BookDTO;
 import org.irfan.library.dto.BookTypeDTO;
+import org.irfan.library.dto.request.CreateBookRequest;
+import org.irfan.library.exception.DuplicateDataException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
@@ -58,8 +61,7 @@ public class BookService {
             return bookRepository.findAllByType(type)
                     .stream()
                     .map(book -> modelMapper.map(book,BookDTO.class))
-                    //.map(book -> new BookDTO(book.getTitle(),new AuthorDTO(book.getAuthor().getFirstname(),book.getAuthor().getLastname()),bookTypeDTO))
-                    .collect(Collectors.toList());
+                    .toList();
         }
         return new ArrayList<>();
     }
@@ -88,5 +90,17 @@ public class BookService {
     public Optional<BookDTO> getBookByIdAndTitle(Long id, String title){
         return bookRepository.findByIdAndTitle(id,title)
                 .map(book -> modelMapper.map(book, BookDTO.class));
+    }
+
+    @Transactional
+    public void createBook(CreateBookRequest request) {
+        Author author = authorRepository.findById(request.getAuthor_id())
+                .orElseThrow(() -> new EntityNotFoundException("Auteur non trouvé avec l'ID: " + request.getAuthor_id()));
+        Type bookType = bookTypeRepository.findById(request.getBooktype_id())
+                .orElseThrow(() -> new EntityNotFoundException("Type de livre non trouvé avec l'ID: " + request.getBooktype_id()));
+        if (bookRepository.existsByTitle(request.getTitle())) {
+            throw new DuplicateDataException("Ce livre existe déjà !");
+        }
+        bookRepository.save(new Book(request.getTitle(), author, bookType));
     }
 }

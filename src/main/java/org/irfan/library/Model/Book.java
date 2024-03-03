@@ -21,7 +21,7 @@ public class Book {
     @NotEmpty
     private String title;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "author_id")
     private Author author;
 

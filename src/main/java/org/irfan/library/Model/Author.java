@@ -23,7 +23,7 @@ public class Author {
     @Column
     @NotEmpty
     private String lastname;
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     private List<Book> books;
 
     public Author(String firstname, String lastname){
