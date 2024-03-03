@@ -39,11 +39,10 @@ public class SpringSecurityConfig{
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/signup").permitAll()
-                                .requestMatchers("/login").permitAll()
+                                .requestMatchers("/api/v1/signup").permitAll()
+                                .requestMatchers("/api/v1/login").permitAll()
                                 .requestMatchers("/admin").hasAuthority(RoleEnum.ADMIN.name())
                                 .requestMatchers("/user").hasAnyAuthority(RoleEnum.ADMIN.name(),RoleEnum.USER.name())
-                                .requestMatchers("/author").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->
