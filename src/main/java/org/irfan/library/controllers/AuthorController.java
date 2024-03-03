@@ -2,6 +2,7 @@ package org.irfan.library.controllers;
 
 import jakarta.validation.Valid;
 import org.irfan.library.dto.*;
+import org.irfan.library.dto.request.AddBookToAuthorRequest;
 import org.irfan.library.dto.request.CreateAuthorRequest;
 import org.irfan.library.dto.request.EditAuthorRequest;
 import org.irfan.library.dto.response.ErrorMessageResponse;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/authors")
+@RequestMapping("/api/v1/authors")
 @CrossOrigin
 public class AuthorController {
 
@@ -71,5 +72,11 @@ public class AuthorController {
     public ResponseEntity<?> deleteAuthor(@PathVariable Integer id){
         authorService.deleteAuthor(id);
         return ResponseEntity.ok(new OKMessageResponse<>("L'auteur est supprimé"));
+    }
+
+    @PostMapping("/{id}/addBook")
+    public ResponseEntity<?> addBookToAuthor(@PathVariable Integer id, @Valid @RequestBody AddBookToAuthorRequest request){
+        authorService.addBookToAuthor(id,request);
+        return ResponseEntity.ok(new OKMessageResponse<>("Le livre a été ajouté"));
     }
 }

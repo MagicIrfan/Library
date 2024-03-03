@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/book")
+@RequestMapping("/api/v1/book")
 public class BookController {
     private final BookService bookService;
 

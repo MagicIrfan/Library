@@ -3,9 +3,13 @@ package org.irfan.library.services;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.irfan.library.Model.Author;
+import org.irfan.library.Model.Book;
+import org.irfan.library.Model.Type;
 import org.irfan.library.dao.AuthorRepository;
 import org.irfan.library.dao.BookRepository;
+import org.irfan.library.dao.BookTypeRepository;
 import org.irfan.library.dto.AuthorWithBooksDTO;
+import org.irfan.library.dto.request.AddBookToAuthorRequest;
 import org.irfan.library.dto.request.CreateAuthorRequest;
 import org.irfan.library.dto.AuthorDTO;
 import org.irfan.library.dto.request.EditAuthorRequest;
@@ -27,14 +31,17 @@ public class AuthorService {
 
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
+    private final BookTypeRepository bookTypeRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
     public AuthorService(AuthorRepository authorRepository,
                          BookRepository bookRepository,
+                         BookTypeRepository bookTypeRepository,
                          ModelMapper modelMapper) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
+        this.bookTypeRepository = bookTypeRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -68,8 +75,7 @@ public class AuthorService {
         if(authorRepository.existsByFirstnameAndLastname(request.getFirstname(), request.getLastname())){
             throw new DuplicateDataException("Vous ne pouvez pas ajouter cet auteur, car il existe déjà");
         }
-        Author author = new Author(request.getFirstname(),request.getLastname());
-        authorRepository.save(author);
+        authorRepository.save(new Author(request.getFirstname(),request.getLastname()));
     }
 
     @Transactional
@@ -92,5 +98,17 @@ public class AuthorService {
             throw new EntityNotFoundException("Trouvé");
         }
         authorRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void addBookToAuthor(Integer id, AddBookToAuthorRequest request) {
+        Author author = authorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Pas trouvé"));
+        Type bookType = bookTypeRepository.findById(request.getBooktype_id())
+                .orElseThrow(() -> new EntityNotFoundException("Type de livre non trouvé avec l'ID: " + request.getBooktype_id()));
+        if (bookRepository.existsByTitle(request.getTitle())) {
+            throw new DuplicateDataException("Ce livre existe déjà !");
+        }
+        bookRepository.save(new Book(request.getTitle(),author,bookType));
     }
 }

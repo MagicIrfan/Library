@@ -13,6 +13,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
+@RequestMapping("/api/v1")
 public class AuthController {
     private final AuthService authService;
     @Autowired
