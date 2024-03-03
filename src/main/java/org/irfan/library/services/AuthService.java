@@ -21,16 +21,24 @@ import java.util.Optional;
 @Service
 public class AuthService {
 
+    private final UserRepository userRepository;
+    private final PasswordEncoder bCryptPasswordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider tokenProvider;
+    private final RoleService roleService;
+
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder bCryptPasswordEncoder;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private JwtTokenProvider tokenProvider;
-    @Autowired
-    private RoleService roleService;
+    public AuthService(UserRepository userRepository,
+                       PasswordEncoder bCryptPasswordEncoder,
+                       AuthenticationManager authenticationManager,
+                       JwtTokenProvider tokenProvider,
+                       RoleService roleService) {
+        this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.tokenProvider = tokenProvider;
+        this.roleService = roleService;
+    }
 
     @Transactional
     public void signUp(String username, String email, String password){

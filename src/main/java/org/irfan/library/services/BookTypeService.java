@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class BookTypeService {
-    final BookTypeRepository bookTypeRepository;
+    private final BookTypeRepository bookTypeRepository;
 
     @Autowired
     public BookTypeService(BookTypeRepository bookTypeRepository){

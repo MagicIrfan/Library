@@ -3,11 +3,13 @@ package org.irfan.library.Model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "Book")
 public class Book {
 
@@ -26,4 +28,10 @@ public class Book {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id")
     private Type type;
+
+    public Book(String title, Author author, Type type){
+        this.title = title;
+        this.author = author;
+        this.type = type;
+    }
 }

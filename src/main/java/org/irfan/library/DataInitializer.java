@@ -3,10 +3,7 @@ package org.irfan.library;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import org.irfan.library.Model.*;
-import org.irfan.library.dao.AuthorRepository;
-import org.irfan.library.dao.BookTypeRepository;
-import org.irfan.library.dao.RoleRepository;
-import org.irfan.library.dao.UserRepository;
+import org.irfan.library.dao.*;
 import org.irfan.library.enums.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,14 +24,21 @@ public class DataInitializer {
     private final PasswordEncoder passwordEncoder;
     private final AuthorRepository authorRepository;
     private final BookTypeRepository bookTypeRepository;
+    private final BookRepository bookRepository;
 
     @Autowired
-    public DataInitializer(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, AuthorRepository authorRepository, BookTypeRepository bookTypeRepository){
+    public DataInitializer(UserRepository userRepository,
+                           RoleRepository roleRepository,
+                           PasswordEncoder passwordEncoder,
+                           AuthorRepository authorRepository,
+                           BookTypeRepository bookTypeRepository,
+                           BookRepository bookRepository){
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorRepository = authorRepository;
         this.bookTypeRepository = bookTypeRepository;
+        this.bookRepository = bookRepository;
     }
 
     @Value("${app.admin.password}")
@@ -47,6 +51,7 @@ public class DataInitializer {
         createAdminUser();
         createAuthors();
         createBookTypes();
+        createBooks();
     }
 
     private void createAdminUser(){
@@ -75,6 +80,7 @@ public class DataInitializer {
             authors.add(new Author("Albert", "Camus"));
             authors.add(new Author("Guillaume", "Apollinaire"));
             authors.add(new Author("Victor", "Hugo"));
+            authors.add(new Author("Eiichiro", "Oda"));
             authorRepository.saveAll(authors);
         }
     }
@@ -103,6 +109,28 @@ public class DataInitializer {
             bookTypes.add(new Type("Guide et manuel"));
             bookTypes.add(new Type("Manga"));
             bookTypeRepository.saveAll(bookTypes);
+        }
+    }
+
+    private void createBooks(){
+        if(bookRepository.count() == 0){
+            // Exemple de récupération d'un auteur et d'un type de livre
+            Optional<Author> camus = authorRepository.findByLastname("Camus");
+            Optional<Type> roman = bookTypeRepository.findByName("Roman");
+
+            List<Book> books = new ArrayList<>();
+
+            // Assurez-vous que l'auteur et le type de livre existent avant de créer un livre
+            if(camus.isPresent() && roman.isPresent()){
+                books.add(new Book("L'Étranger", camus.get(), roman.get()));
+                books.add(new Book("La Peste", camus.get(), roman.get()));
+                // Ajoutez d'autres livres ici
+            }
+
+            // Vous pouvez répéter le processus pour d'autres auteurs et types de livres
+
+            // Enregistrez tous les livres préparés
+            bookRepository.saveAll(books);
         }
     }
 }
