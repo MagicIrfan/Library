@@ -3,6 +3,7 @@ package org.irfan.library.services;
 import org.irfan.library.Model.Author;
 import org.irfan.library.dao.AuthorRepository;
 import org.irfan.library.dao.BookRepository;
+import org.irfan.library.dto.AuthorWithBooksDTO;
 import org.irfan.library.dto.request.CreateAuthorRequest;
 import org.irfan.library.dto.AuthorDTO;
 import org.irfan.library.exception.DuplicateDataException;
@@ -32,28 +33,28 @@ public class AuthorService {
     }
 
     @Transactional(readOnly = true)
-    public List<AuthorDTO> getAllAuthors() {
+    public List<AuthorWithBooksDTO> getAllAuthors() {
         return authorRepository.findAll().stream()
-                .map(author -> modelMapper.map(author,AuthorDTO.class))
-                .collect(Collectors.toList());
+                .map(author -> modelMapper.map(author,AuthorWithBooksDTO.class))
+                .toList();
     }
 
     @Transactional(readOnly = true)
-    public Optional<AuthorDTO> getAuthorByFirstName(String name) {
+    public Optional<AuthorWithBooksDTO> getAuthorByFirstName(String name) {
         return authorRepository.findByFirstname(name)
-                .map(author -> modelMapper.map(author,AuthorDTO.class));
+                .map(author -> modelMapper.map(author,AuthorWithBooksDTO.class));
     }
 
     @Transactional(readOnly = true)
-    public Optional<AuthorDTO> getAuthorByFirstNameAndLastName(String firstname, String lastname) {
+    public Optional<AuthorWithBooksDTO> getAuthorByFirstNameAndLastName(String firstname, String lastname) {
         return authorRepository.findByFirstnameAndLastname(firstname,lastname)
-                .map(author -> modelMapper.map(author,AuthorDTO.class));
+                .map(author -> modelMapper.map(author,AuthorWithBooksDTO.class));
     }
 
     @Transactional(readOnly = true)
-    public Optional<AuthorDTO> getAuthorByLastName(String lastname) {
+    public Optional<AuthorWithBooksDTO> getAuthorByLastName(String lastname) {
         return authorRepository.findByLastname(lastname)
-                .map(author -> modelMapper.map(author,AuthorDTO.class));
+                .map(author -> modelMapper.map(author,AuthorWithBooksDTO.class));
     }
 
     @Transactional

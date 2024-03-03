@@ -25,8 +25,8 @@ public class AuthorController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<AuthorDTO>> getAllAuthors() {
-        List<AuthorDTO> authors = authorService.getAllAuthors();
+    public ResponseEntity<List<AuthorWithBooksDTO>> getAllAuthors() {
+        List<AuthorWithBooksDTO> authors = authorService.getAllAuthors();
         return !authors.isEmpty() ? ResponseEntity.ok().body(authors) : ResponseEntity.notFound().build();
     }
 

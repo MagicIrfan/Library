@@ -1,9 +1,10 @@
 package org.irfan.library.controllers;
 
 import jakarta.validation.Valid;
-import org.irfan.library.dto.AuthorDTO;
 import org.irfan.library.dto.BookDTO;
+import org.irfan.library.dto.request.CreateBookRequest;
 import org.irfan.library.dto.response.ErrorMessageResponse;
+import org.irfan.library.dto.response.OKMessageResponse;
 import org.irfan.library.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -52,5 +53,8 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createBook(@Valid @RequestBody)
+    public ResponseEntity<?> createBook(@Valid @RequestBody CreateBookRequest request){
+        //bookService.
+        return ResponseEntity.ok(new OKMessageResponse<>("test"));
+    }
 }
