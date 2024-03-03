@@ -1,16 +1,22 @@
 package org.irfan.library.services;
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.irfan.library.Model.Author;
 import org.irfan.library.dao.AuthorRepository;
 import org.irfan.library.dao.BookRepository;
 import org.irfan.library.dto.AuthorWithBooksDTO;
 import org.irfan.library.dto.request.CreateAuthorRequest;
 import org.irfan.library.dto.AuthorDTO;
+import org.irfan.library.dto.request.EditAuthorRequest;
 import org.irfan.library.exception.DuplicateDataException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -64,5 +70,27 @@ public class AuthorService {
         }
         Author author = new Author(request.getFirstname(),request.getLastname());
         authorRepository.save(author);
+    }
+
+    @Transactional
+    public void editAuthor(Integer id, EditAuthorRequest request){
+        Author author = authorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Pas trouvé"));
+        Optional.ofNullable(request.getFirstname())
+                .filter(StringUtils::hasText)
+                .ifPresent(author::setFirstname);
+        Optional.ofNullable(request.getLastname())
+                .filter(StringUtils::hasText)
+                .ifPresent(author::setLastname);
+        authorRepository.save(author);
+    }
+
+    @Transactional
+    public void deleteAuthor(Integer id){
+        boolean authorExists = authorRepository.existsById(id);
+        if(!authorExists){
+            throw new EntityNotFoundException("Trouvé");
+        }
+        authorRepository.deleteById(id);
     }
 }

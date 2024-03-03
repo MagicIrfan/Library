@@ -40,7 +40,6 @@ public class BookTypeService {
         if(bookTypeRepository.existsByName(name)){
             throw new DuplicateDataException("Vous ne pouvez pas ajouter ce type de livre, car il existe déjà");
         }
-        Type type = new Type(name);
-        bookTypeRepository.save(type);
+        bookTypeRepository.save(new Type(name));
     }
 }

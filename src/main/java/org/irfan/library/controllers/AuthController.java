@@ -1,6 +1,7 @@
 package org.irfan.library.controllers;
 
 import jakarta.validation.Valid;
+import org.irfan.library.dto.request.EditUserRequest;
 import org.irfan.library.dto.request.LoginRequest;
 import org.irfan.library.dto.response.OKMessageResponse;
 import org.irfan.library.dto.request.SignupRequest;

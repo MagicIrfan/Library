@@ -11,12 +11,14 @@ import org.irfan.library.dto.AuthorDTO;
 import org.irfan.library.dto.BookDTO;
 import org.irfan.library.dto.BookTypeDTO;
 import org.irfan.library.dto.request.CreateBookRequest;
+import org.irfan.library.dto.request.EditBookRequest;
 import org.irfan.library.exception.DuplicateDataException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +79,7 @@ public class BookService {
         return bookRepository.findAll()
                 .stream()
                 .map(book -> modelMapper.map(book, BookDTO.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Transactional(readOnly = true)
@@ -102,5 +104,42 @@ public class BookService {
             throw new DuplicateDataException("Ce livre existe déjà !");
         }
         bookRepository.save(new Book(request.getTitle(), author, bookType));
+    }
+
+    @Transactional
+    public void editBook(Integer book_id, EditBookRequest request){
+        Book book = bookRepository.findById(book_id)
+                .orElseThrow(() -> new EntityNotFoundException("Aucun livre trouvé avec l'ID: " + book_id));
+
+        Optional.ofNullable(request.getAuthor_id()).ifPresent(authorId -> {
+            Author author = authorRepository.findById(authorId)
+                    .orElseThrow(() -> new EntityNotFoundException("Auteur non trouvé avec l'ID: " + authorId));
+            if (!author.equals(book.getAuthor())) {
+                book.setAuthor(author);
+            }
+        });
+
+        Optional.ofNullable(request.getBooktype_id()).ifPresent(bookTypeId -> {
+            Type type = bookTypeRepository.findById(bookTypeId)
+                    .orElseThrow(() -> new EntityNotFoundException("Type de livre non trouvé avec l'ID: " + bookTypeId));
+            if (!type.equals(book.getType())) {
+                book.setType(type);
+            }
+        });
+
+        Optional.ofNullable(request.getTitle())
+                .filter(StringUtils::hasText)
+                .ifPresent(book::setTitle);
+
+        bookRepository.save(book);
+    }
+
+    @Transactional
+    public void deleteBook(Integer bookId){
+        boolean exists = bookRepository.existsById(bookId);
+        if (!exists) {
+            throw new EntityNotFoundException("Aucun livre trouvé avec l'ID: " + bookId);
+        }
+        bookRepository.deleteById(bookId);
     }
 }

@@ -1,5 +1,6 @@
 package org.irfan.library.controllers;
 
+import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import org.irfan.library.Model.Author;
 import org.irfan.library.Model.Type;
@@ -7,11 +8,10 @@ import org.irfan.library.dao.AuthorRepository;
 import org.irfan.library.dao.BookTypeRepository;
 import org.irfan.library.dto.BookDTO;
 import org.irfan.library.dto.request.CreateBookRequest;
+import org.irfan.library.dto.request.EditBookRequest;
 import org.irfan.library.dto.response.ErrorMessageResponse;
 import org.irfan.library.dto.response.OKMessageResponse;
-import org.irfan.library.services.AuthorService;
 import org.irfan.library.services.BookService;
-import org.irfan.library.services.BookTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -64,8 +64,15 @@ public class BookController {
         return ResponseEntity.ok(new OKMessageResponse<>("Livre créé avec succès."));
     }
 
-    @PatchMapping("/:id")
-    public ResponseEntity<?> editBook(){
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> editBook(@PathVariable(name = "id") Integer book_id, @Valid @RequestBody EditBookRequest request){
+        bookService.editBook(book_id,request);
+        return ResponseEntity.ok(new OKMessageResponse<>("Livre modifié succès."));
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteBook(@PathVariable(name = "id") Integer book_id){
+        bookService.deleteBook(book_id);
+        return ResponseEntity.ok(new OKMessageResponse<>("Livre supprimé avec succès."));
     }
 }

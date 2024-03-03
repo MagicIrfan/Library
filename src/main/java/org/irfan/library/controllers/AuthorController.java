@@ -3,6 +3,7 @@ package org.irfan.library.controllers;
 import jakarta.validation.Valid;
 import org.irfan.library.dto.*;
 import org.irfan.library.dto.request.CreateAuthorRequest;
+import org.irfan.library.dto.request.EditAuthorRequest;
 import org.irfan.library.dto.response.ErrorMessageResponse;
 import org.irfan.library.dto.response.OKMessageResponse;
 import org.irfan.library.services.AuthorService;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/author")
+@RequestMapping("/authors")
 @CrossOrigin
 public class AuthorController {
 
@@ -58,5 +59,17 @@ public class AuthorController {
     public ResponseEntity<?> createAuthor(@Valid @RequestBody CreateAuthorRequest request){
         authorService.createAuthor(request);
         return ResponseEntity.ok(new OKMessageResponse<>("L'auteur " + request.getFirstname() + " " + request.getLastname() + " a été crée"));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> editAuthor(@PathVariable Integer id, @Valid @RequestBody EditAuthorRequest request){
+        authorService.editAuthor(id, request);
+        return ResponseEntity.ok(new OKMessageResponse<>("L'auteur " + request.getFirstname() + " " + request.getLastname() + " a été crée"));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAuthor(@PathVariable Integer id){
+        authorService.deleteAuthor(id);
+        return ResponseEntity.ok(new OKMessageResponse<>("L'auteur est supprimé"));
     }
 }
