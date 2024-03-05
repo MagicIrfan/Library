@@ -93,6 +93,21 @@ public class BookService {
                 .map(book -> modelMapper.map(book, BookDTO.class));
     }
 
+    @Transactional(readOnly = true)
+    public Optional<BookDTO> getBook(Optional<Long> id, Optional<String> title){
+        boolean idIsPresent = id.isPresent();
+        boolean titleIsPresent = title.isPresent() && !title.get().isEmpty();
+
+        if (idIsPresent && titleIsPresent) {
+            return getBookByIdAndTitle(id.get(), title.get());
+        } else if (idIsPresent) {
+            return getBookById(id.get());
+        } else if (titleIsPresent) {
+            return getBookByTitle(title.get());
+        }
+        return Optional.empty();
+    }
+
     @Transactional
     public void createBook(CreateBookRequest request) {
         Author author = authorRepository.findById(request.getAuthor_id())

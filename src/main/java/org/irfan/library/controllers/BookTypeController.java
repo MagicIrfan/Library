@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/booktype")
+@RequestMapping("/api/v1/booktypes")
 @CrossOrigin
 public class BookTypeController {
     private final BookTypeService bookTypeService;
@@ -25,8 +25,9 @@ public class BookTypeController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<BookTypeDTO>> getAllBookTypes() {
-        List<BookTypeDTO> bookTypes = bookTypeService.getAllBookTypes();
+    public ResponseEntity<List<BookTypeDTO>> getAllBookTypes(@RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "3") int size) {
+        List<BookTypeDTO> bookTypes = bookTypeService.getAllBookTypes(page,size);
         return !bookTypes.isEmpty() ? ResponseEntity.ok().body(bookTypes) : ResponseEntity.notFound().build();
     }
 

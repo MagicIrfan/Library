@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1/book")
+@RequestMapping("/api/v1/books")
 public class BookController {
     private final BookService bookService;
 
@@ -34,22 +34,8 @@ public class BookController {
     @GetMapping()
     public ResponseEntity<?> getBook(@RequestParam(value = "id", required = false) Optional<Long> id,
                                      @RequestParam(value = "title", required = false) Optional<String> title){
-        boolean idIsPresent = id.isPresent();
-        boolean titleIsPresent = title.isPresent() && !title.get().isEmpty();
-
-        if (idIsPresent && titleIsPresent) {
-            return bookService.getBookByIdAndTitle(id.get(), title.get())
-                    .map(author -> ResponseEntity.ok().body(author))
-                    .orElse(ResponseEntity.notFound().build());
-        } else if (idIsPresent) {
-            return bookService.getBookById(id.get())
-                    .map(author -> ResponseEntity.ok().body(author))
-                    .orElse(ResponseEntity.notFound().build());
-        } else if (titleIsPresent) {
-            return bookService.getBookByTitle(title.get())
-                    .map(author -> ResponseEntity.ok().body(author))
-                    .orElse(ResponseEntity.notFound().build());
-        }
+        bookService.getBook(id,title).map(author -> ResponseEntity.ok().body(author))
+                .orElse(ResponseEntity.notFound().build());
         return ResponseEntity.badRequest().body(new ErrorMessageResponse<>("Vous pouvre s'il vous-plaît"));
     }
 

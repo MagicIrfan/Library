@@ -1,6 +1,8 @@
 package org.irfan.library.dao;
 
 import org.irfan.library.Model.Type;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
