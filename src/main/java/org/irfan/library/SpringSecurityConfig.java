@@ -5,6 +5,7 @@ import org.irfan.library.filters.JwtTokenAuthenticationFilter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -41,8 +42,9 @@ public class SpringSecurityConfig{
                         authorizeRequests
                                 .requestMatchers("/api/v1/signup").permitAll()
                                 .requestMatchers("/api/v1/login").permitAll()
-                                .requestMatchers("/admin").hasAuthority(RoleEnum.ADMIN.name())
-                                .requestMatchers("/user").hasAnyAuthority(RoleEnum.ADMIN.name(),RoleEnum.USER.name())
+                                .requestMatchers(HttpMethod.PATCH,"/api/v1/**").hasAuthority(RoleEnum.ADMIN.name())
+                                .requestMatchers(HttpMethod.PUT,"/api/v1/**").hasAuthority(RoleEnum.ADMIN.name())
+                                .requestMatchers(HttpMethod.DELETE,"/api/v1/**").hasAuthority(RoleEnum.ADMIN.name())
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->
