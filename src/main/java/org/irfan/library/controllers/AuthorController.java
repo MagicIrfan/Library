@@ -9,6 +9,7 @@ import org.irfan.library.dto.response.ErrorMessageResponse;
 import org.irfan.library.dto.response.OKMessageResponse;
 import org.irfan.library.services.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,56 +27,35 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<AuthorWithBooksDTO>> getAllAuthors() {
-        List<AuthorWithBooksDTO> authors = authorService.getAllAuthors();
-        return !authors.isEmpty() ? ResponseEntity.ok().body(authors) : ResponseEntity.notFound().build();
-    }
-
     @GetMapping()
-    public ResponseEntity<?> getAuthor(
+    public ResponseEntity<List<AuthorWithBooksDTO>> getAuthor(
+            @RequestParam(value = "id", required = false) Optional<Long> id,
             @RequestParam(value = "firstname", required = false) Optional<String> firstname,
-            @RequestParam(value = "lastname", required = false) Optional<String> lastname) {
-
-        boolean firstnameIsPresent = firstname.isPresent() && !firstname.get().isEmpty();
-        boolean lastnameIsPresent = lastname.isPresent() && !lastname.get().isEmpty();
-
-        if (firstnameIsPresent && lastnameIsPresent) {
-            return authorService.getAuthorByFirstNameAndLastName(firstname.get(), lastname.get())
-                    .map(author -> ResponseEntity.ok().body(author))
-                    .orElse(ResponseEntity.notFound().build());
-        } else if (firstnameIsPresent) {
-            return authorService.getAuthorByFirstName(firstname.get())
-                    .map(author -> ResponseEntity.ok().body(author))
-                    .orElse(ResponseEntity.notFound().build());
-        } else if (lastnameIsPresent) {
-            return authorService.getAuthorByLastName(lastname.get())
-                    .map(author -> ResponseEntity.ok().body(author))
-                    .orElse(ResponseEntity.notFound().build());
-        }
-        return ResponseEntity.badRequest().body(new ErrorMessageResponse<>("Please provide at least a first name or a last name."));
+            @RequestParam(value = "lastname", required = false) Optional<String> lastname,
+            @RequestParam(value = "bookId", required = false) Optional<Long> bookId) {
+        return ResponseEntity.ok().body(authorService.getAuthorsByCriteria(id,firstname,lastname,bookId));
     }
 
     @PostMapping()
-    public ResponseEntity<?> createAuthor(@Valid @RequestBody CreateAuthorRequest request){
+    public ResponseEntity<OKMessageResponse<String>> createAuthor(@Valid @RequestBody CreateAuthorRequest request){
         authorService.createAuthor(request);
         return ResponseEntity.ok(new OKMessageResponse<>("L'auteur " + request.getFirstname() + " " + request.getLastname() + " a été crée"));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> editAuthor(@PathVariable Integer id, @Valid @RequestBody EditAuthorRequest request){
+    public ResponseEntity<OKMessageResponse<String>> editAuthor(@PathVariable Integer id, @Valid @RequestBody EditAuthorRequest request){
         authorService.editAuthor(id, request);
         return ResponseEntity.ok(new OKMessageResponse<>("L'auteur " + request.getFirstname() + " " + request.getLastname() + " a été crée"));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAuthor(@PathVariable Integer id){
+    public ResponseEntity<OKMessageResponse<String>> deleteAuthor(@PathVariable Integer id){
         authorService.deleteAuthor(id);
         return ResponseEntity.ok(new OKMessageResponse<>("L'auteur est supprimé"));
     }
 
     @PostMapping("/{id}/books")
-    public ResponseEntity<?> addBookToAuthor(@PathVariable Integer id, @Valid @RequestBody AddBookToAuthorRequest request){
+    public ResponseEntity<OKMessageResponse<String>> addBookToAuthor(@PathVariable Integer id, @Valid @RequestBody AddBookToAuthorRequest request){
         authorService.addBookToAuthor(id,request);
         return ResponseEntity.ok(new OKMessageResponse<>("Le livre a été ajouté"));
     }

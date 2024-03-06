@@ -40,72 +40,11 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public List<BookDTO> getAllByAuthor(Integer author_id){
-        Optional<Author> authorOptional = authorRepository.findById(author_id);
-        if(authorOptional.isPresent()){
-            Author author = authorOptional.get();
-            AuthorDTO authorDTO = modelMapper.map(author,AuthorDTO.class);
-            return bookRepository.findAllByAuthor(author)
-                    .stream()
-                    .map(book -> new BookDTO(book.getTitle(),authorDTO,new BookTypeDTO(book.getType().getName())))
-                    .collect(Collectors.toList());
-        }
-        return new ArrayList<>();
-    }
-
-    @Transactional(readOnly = true)
-    public List<BookDTO> getAllByBookType(Integer booktype_id){
-        Optional<Type> typeOptional = bookTypeRepository.findById(booktype_id);
-        if(typeOptional.isPresent()){
-            Type type = typeOptional.get();
-            BookTypeDTO bookTypeDTO = modelMapper.map(type,BookTypeDTO.class);
-            return bookRepository.findAllByType(type)
-                    .stream()
-                    .map(book -> modelMapper.map(book,BookDTO.class))
-                    .toList();
-        }
-        return new ArrayList<>();
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<BookDTO> getBookByTitle(String title){
-        return bookRepository.findByTitle(title)
-                .map(book -> modelMapper.map(book, BookDTO.class));
-    }
-
-    @Transactional(readOnly = true)
-    public List<BookDTO> getAllBooks(){
-        return bookRepository.findAll()
+    public List<BookDTO> getBookByCriterias(Optional<Long> id, Optional<String> title, Optional<Long> authorId, Optional<Long> bookTypeId){
+        return bookRepository.findBooksCustom(id,title,authorId,bookTypeId)
                 .stream()
                 .map(book -> modelMapper.map(book, BookDTO.class))
                 .toList();
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<BookDTO> getBookById(Long id){
-        return bookRepository.findById(Math.toIntExact(id))
-                .map(book -> modelMapper.map(book, BookDTO.class));
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<BookDTO> getBookByIdAndTitle(Long id, String title){
-        return bookRepository.findByIdAndTitle(id,title)
-                .map(book -> modelMapper.map(book, BookDTO.class));
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<BookDTO> getBook(Optional<Long> id, Optional<String> title){
-        boolean idIsPresent = id.isPresent();
-        boolean titleIsPresent = title.isPresent() && !title.get().isEmpty();
-
-        if (idIsPresent && titleIsPresent) {
-            return getBookByIdAndTitle(id.get(), title.get());
-        } else if (idIsPresent) {
-            return getBookById(id.get());
-        } else if (titleIsPresent) {
-            return getBookByTitle(title.get());
-        }
-        return Optional.empty();
     }
 
     @Transactional

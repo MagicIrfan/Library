@@ -113,7 +113,7 @@ public class DataInitializer {
     private void createBooks(){
         if(bookRepository.count() == 0){
             // Exemple de récupération d'un auteur et d'un type de livre
-            Optional<Author> camus = authorRepository.findByLastname("Camus");
+            Optional<Author> camus = authorRepository.findByFirstnameAndLastname("Albert","Camus");
             Optional<Type> roman = bookTypeRepository.findByName("Roman");
 
             List<Book> books = new ArrayList<>();

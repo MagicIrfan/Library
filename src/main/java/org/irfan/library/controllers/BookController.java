@@ -25,18 +25,13 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<BookDTO>> getAllBooks(){
-        List<BookDTO> books = bookService.getAllBooks();
-        return !books.isEmpty() ? ResponseEntity.ok().body(books) : ResponseEntity.notFound().build();
-    }
-
     @GetMapping()
-    public ResponseEntity<?> getBook(@RequestParam(value = "id", required = false) Optional<Long> id,
-                                     @RequestParam(value = "title", required = false) Optional<String> title){
-        bookService.getBook(id,title).map(author -> ResponseEntity.ok().body(author))
-                .orElse(ResponseEntity.notFound().build());
-        return ResponseEntity.badRequest().body(new ErrorMessageResponse<>("Vous pouvre s'il vous-plaît"));
+    public ResponseEntity<?> getBooks(@RequestParam(value = "id", required = false) Optional<Long> id,
+                                     @RequestParam(value = "title", required = false) Optional<String> title,
+                                     @RequestParam(value = "authorId", required = false) Optional<Long> authorId,
+                                     @RequestParam(value = "bookTypeId", required = false) Optional<Long> bookTypeId){
+
+        return ResponseEntity.ok().body(bookService.getBookByCriterias(id,title,authorId,bookTypeId));
     }
 
     @PostMapping()
@@ -46,13 +41,13 @@ public class BookController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> editBook(@PathVariable(name = "id") Integer book_id, @Valid @RequestBody EditBookRequest request){
+    public ResponseEntity<OKMessageResponse<String>> editBook(@PathVariable(name = "id") Integer book_id, @Valid @RequestBody EditBookRequest request){
         bookService.editBook(book_id,request);
         return ResponseEntity.ok(new OKMessageResponse<>("Livre modifié succès."));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBook(@PathVariable(name = "id") Integer book_id){
+    public ResponseEntity<OKMessageResponse<String>> deleteBook(@PathVariable(name = "id") Integer book_id){
         bookService.deleteBook(book_id);
         return ResponseEntity.ok(new OKMessageResponse<>("Livre supprimé avec succès."));
     }

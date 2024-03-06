@@ -42,28 +42,10 @@ public class AuthorService {
     }
 
     @Transactional(readOnly = true)
-    public List<AuthorWithBooksDTO> getAllAuthors() {
-        return authorRepository.findAll().stream()
+    public List<AuthorWithBooksDTO> getAuthorsByCriteria(Optional<Long> id, Optional<String> firstname, Optional<String> lastname, Optional<Long> bookId) {
+        return authorRepository.findAuthorsCustom(id,firstname,lastname,bookId).stream()
                 .map(author -> modelMapper.map(author,AuthorWithBooksDTO.class))
                 .toList();
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<AuthorWithBooksDTO> getAuthorByFirstName(String name) {
-        return authorRepository.findByFirstname(name)
-                .map(author -> modelMapper.map(author,AuthorWithBooksDTO.class));
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<AuthorWithBooksDTO> getAuthorByFirstNameAndLastName(String firstname, String lastname) {
-        return authorRepository.findByFirstnameAndLastname(firstname,lastname)
-                .map(author -> modelMapper.map(author,AuthorWithBooksDTO.class));
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<AuthorWithBooksDTO> getAuthorByLastName(String lastname) {
-        return authorRepository.findByLastname(lastname)
-                .map(author -> modelMapper.map(author,AuthorWithBooksDTO.class));
     }
 
     @Transactional

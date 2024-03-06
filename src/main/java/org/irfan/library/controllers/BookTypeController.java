@@ -24,22 +24,18 @@ public class BookTypeController {
         this.bookTypeService = bookTypeService;
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<BookTypeDTO>> getAllBookTypes(@RequestParam(defaultValue = "0") int page,
-                                                             @RequestParam(defaultValue = "3") int size) {
-        List<BookTypeDTO> bookTypes = bookTypeService.getAllBookTypes(page,size);
-        return !bookTypes.isEmpty() ? ResponseEntity.ok().body(bookTypes) : ResponseEntity.notFound().build();
-    }
-
-    @GetMapping()
-    public ResponseEntity<?> getBookTypeByName(@RequestParam(value = "name", required = false) Optional<String> name) {
-        boolean nameIsPresent = name.isPresent() && !name.get().isEmpty();
-        if (nameIsPresent) {
+    @GetMapping
+    public ResponseEntity<?> getBookTypes(@RequestParam(value = "name", required = false) Optional<String> name,
+                                          @RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "3") int size) {
+        if (name.isPresent() && !name.get().isEmpty()) {
             return bookTypeService.getBookTypeByName(name.get())
                     .map(bookType -> ResponseEntity.ok().body(bookType))
                     .orElse(ResponseEntity.notFound().build());
+        } else {
+            List<BookTypeDTO> bookTypes = bookTypeService.getAllBookTypes(page, size);
+            return !bookTypes.isEmpty() ? ResponseEntity.ok().body(bookTypes) : ResponseEntity.notFound().build();
         }
-        return ResponseEntity.badRequest().body(new ErrorMessageResponse<>("Please provide at least a book type name."));
     }
 
     @PostMapping()
