@@ -2,12 +2,14 @@ package org.irfan.library.services;
 
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-@Component
-public class JwtTokenProvider {
+@Service
+public class JwtTokenService {
 
     @Value("${app.jwtSecret}")
     private String jwtSecret;

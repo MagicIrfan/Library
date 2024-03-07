@@ -40,8 +40,7 @@ public class SpringSecurityConfig{
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/v1/signup").permitAll()
-                                .requestMatchers("/api/v1/login").permitAll()
+                                .requestMatchers("/api/v1/signup", "/api/v1/login", "/api/v1/refreshToken").permitAll()
                                 .requestMatchers(HttpMethod.PATCH,"/api/v1/**").hasAuthority(RoleEnum.ADMIN.name())
                                 .requestMatchers(HttpMethod.PUT,"/api/v1/**").hasAuthority(RoleEnum.ADMIN.name())
                                 .requestMatchers(HttpMethod.DELETE,"/api/v1/**").hasAuthority(RoleEnum.ADMIN.name())

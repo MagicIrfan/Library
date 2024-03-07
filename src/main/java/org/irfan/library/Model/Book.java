@@ -22,11 +22,11 @@ public class Book {
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
     private Author author;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "type_id")
+    @JoinColumn(name = "type_id", referencedColumnName = "id")
     private Type type;
 
     public Book(String title, Author author, Type type){

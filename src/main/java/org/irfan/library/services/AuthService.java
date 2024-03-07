@@ -24,14 +24,14 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider tokenProvider;
+    private final JwtTokenService tokenProvider;
     private final RoleService roleService;
 
     @Autowired
     public AuthService(UserRepository userRepository,
                        PasswordEncoder bCryptPasswordEncoder,
                        AuthenticationManager authenticationManager,
-                       JwtTokenProvider tokenProvider,
+                       JwtTokenService tokenProvider,
                        RoleService roleService) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
