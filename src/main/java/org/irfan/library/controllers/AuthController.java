@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.irfan.library.Model.RefreshToken;
 import org.irfan.library.dto.JwtResponseDTO;
 import org.irfan.library.dto.request.LoginRequest;
+import org.irfan.library.dto.request.LogoutRequest;
 import org.irfan.library.dto.request.RefreshTokenRequest;
 import org.irfan.library.dto.response.OKMessageResponse;
 import org.irfan.library.dto.request.SignupRequest;
@@ -43,6 +44,13 @@ public class AuthController {
             return ResponseEntity.internalServerError().body("Une erreur est survenue : " + e.getMessage());
         }
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@Valid @RequestBody LogoutRequest request){
+        authService.logout(request);
+        return ResponseEntity.ok().body("Utilisateur déconnecté");
+    }
+
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupRequest request) {
         authService.signUp(request.getUsername(), request.getEmail(), request.getPassword());

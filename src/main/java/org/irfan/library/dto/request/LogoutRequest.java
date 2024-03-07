@@ -6,9 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class RefreshTokenRequest {
+@AllArgsConstructor
+public class LogoutRequest {
     @NotEmpty
     private String token;
 }

@@ -1,8 +1,12 @@
 package org.irfan.library.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.irfan.library.Model.Role;
+import org.irfan.library.Model.TokenBlacklist;
 import org.irfan.library.Model.User;
+import org.irfan.library.dao.TokenBlacklistRepository;
 import org.irfan.library.dao.UserRepository;
+import org.irfan.library.dto.request.LogoutRequest;
 import org.irfan.library.enums.RoleEnum;
 import org.irfan.library.exception.DuplicateDataException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +30,21 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenService tokenProvider;
     private final RoleService roleService;
+    private final TokenBlacklistRepository tokenBlacklistRepository;
 
     @Autowired
     public AuthService(UserRepository userRepository,
                        PasswordEncoder bCryptPasswordEncoder,
                        AuthenticationManager authenticationManager,
                        JwtTokenService tokenProvider,
-                       RoleService roleService) {
+                       RoleService roleService,
+                       TokenBlacklistRepository tokenBlacklistRepository) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;
         this.roleService = roleService;
+        this.tokenBlacklistRepository = tokenBlacklistRepository;
     }
 
     @Transactional
@@ -70,5 +77,20 @@ public class AuthService {
 
     private boolean userExists(String username, String email){
         return Optional.ofNullable(userRepository.findByUsernameOrEmail(username,email)).isPresent();
+    }
+
+    public void logout(LogoutRequest request){
+        String token = request.getToken();
+        if(tokenBlacklistRepository.existsByToken(token)){
+            throw new DuplicateDataException("Le token existe déjà !");
+        }
+        User user = userRepository.findByUsername(tokenProvider.getUsernameFromToken(token))
+                .orElseThrow(() -> new EntityNotFoundException("User pas trouvé"));
+        TokenBlacklist tokenToBlacklist = TokenBlacklist
+                .builder()
+                .token(token)
+                .userInfo(user)
+                .build();
+        tokenBlacklistRepository.save(tokenToBlacklist);
     }
 }
