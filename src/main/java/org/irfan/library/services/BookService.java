@@ -47,6 +47,13 @@ public class BookService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public BookDTO getBookById(Integer id){
+        return bookRepository.findById(id)
+                .map(book -> modelMapper.map(book,BookDTO.class))
+                .orElseThrow();
+    }
+
     @Transactional
     public void createBook(CreateBookRequest request) {
         Author author = authorRepository.findById(request.getAuthor_id())

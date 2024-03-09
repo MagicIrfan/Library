@@ -15,6 +15,7 @@ import java.util.Optional;
 public interface BookRepository extends JpaRepository<Book,Integer>, JpaSpecificationExecutor<Book> {
     boolean existsByTitle(String title);
     List<Book> findAllByAuthor_Id(Long author_id);
+    Optional<Book> findByTitle(String title);
     default List<Book> findBooksCustom(Optional<Long> id, Optional<String> title, Optional<Long> authorId, Optional<Long> bookTypeId){
         Specification<Book> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
