@@ -43,7 +43,7 @@ public class BookController {
     @PatchMapping("/{id}")
     public ResponseEntity<OKMessageResponse<String>> editBook(@PathVariable(name = "id") Integer book_id, @Valid @RequestBody EditBookRequest request){
         bookService.editBook(book_id,request);
-        return ResponseEntity.ok(new OKMessageResponse<>("Livre modifié succès."));
+        return ResponseEntity.ok(new OKMessageResponse<>("Livre modifié avec succès."));
     }
 
     @DeleteMapping("/{id}")

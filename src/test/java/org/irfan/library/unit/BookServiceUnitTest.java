@@ -1,5 +1,6 @@
 package org.irfan.library.unit;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.irfan.library.Model.Author;
 import org.irfan.library.Model.Book;
 import org.irfan.library.Model.Type;
@@ -175,5 +176,19 @@ public class BookServiceUnitTest {
         assertEquals(newTitle, savedBook.getTitle());
         assertEquals(type2, savedBook.getType());
         assertEquals(author2, savedBook.getAuthor());
+    }
+
+    @Test
+    public void whenEditBookAndBookNotFound_thenThrowsException() {
+        // Given
+        int nonExistentBookId = 999;
+        EditBookRequest request = new EditBookRequest(); // configurez votre requête selon les besoins
+
+        when(bookRepository.findById(nonExistentBookId)).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThrows(EntityNotFoundException.class, () -> {
+            bookService.editBook(nonExistentBookId, request);
+        });
     }
 }

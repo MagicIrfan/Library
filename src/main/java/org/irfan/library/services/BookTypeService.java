@@ -1,10 +1,13 @@
 package org.irfan.library.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.irfan.library.Model.Type;
 import org.irfan.library.dao.BookTypeRepository;
 import org.irfan.library.dto.BookTypeDTO;
 import org.irfan.library.exception.DuplicateDataException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,10 +22,12 @@ import java.util.stream.Collectors;
 @Service
 public class BookTypeService {
     private final BookTypeRepository bookTypeRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public BookTypeService(BookTypeRepository bookTypeRepository){
+    public BookTypeService(BookTypeRepository bookTypeRepository, ModelMapper modelMapper){
         this.bookTypeRepository = bookTypeRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Transactional(readOnly = true)
@@ -44,6 +49,13 @@ public class BookTypeService {
         } else {
             return new ArrayList<BookTypeDTO>();
         }
+    }
+
+    @Transactional(readOnly = true)
+    public BookTypeDTO getBookTypeById(Integer id){
+        return bookTypeRepository.findById(id)
+                .map(bookType -> modelMapper.map(bookType, BookTypeDTO.class))
+                .orElseThrow(() -> new EntityNotFoundException("BookType with ID " + id + " not found"));
     }
 
     @Transactional

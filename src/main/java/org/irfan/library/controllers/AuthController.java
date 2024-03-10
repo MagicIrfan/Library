@@ -46,13 +46,13 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@Valid @RequestBody LogoutRequest request){
+    public ResponseEntity<String> logout(@Valid @RequestBody LogoutRequest request){
         authService.logout(request);
         return ResponseEntity.ok().body("Utilisateur déconnecté");
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@Valid @RequestBody SignupRequest request) {
+    public ResponseEntity<OKMessageResponse> signup(@Valid @RequestBody SignupRequest request) {
         authService.signUp(request.getUsername(), request.getEmail(), request.getPassword());
         return ResponseEntity.ok().body(new OKMessageResponse<>("L'utilisateur est inscrit"));
     }
@@ -63,13 +63,11 @@ public class AuthController {
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUserInfo)
                 .map(userInfo -> {
-                    // Utilisation de getUsername() pour créer le token d'accès.
                     String accessToken = jwtTokenService.createToken(userInfo.getUsername());
                     JwtResponseDTO responseDTO = JwtResponseDTO.builder()
                             .accessToken(accessToken)
                             .token(refreshTokenRequestDTO.getToken())
                             .build();
-                    // Encapsulation de la réponse dans ResponseEntity avec un statut HTTP OK.
                     return new ResponseEntity<>(responseDTO, HttpStatus.OK);
                 })
                 .orElseThrow(() -> new RuntimeException("Refresh Token is not in DB..!!"));

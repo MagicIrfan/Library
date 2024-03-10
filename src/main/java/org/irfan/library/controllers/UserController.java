@@ -25,13 +25,13 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> editUser(@PathVariable Integer id, @Valid @RequestBody EditUserRequest request) {
+    public ResponseEntity<OKMessageResponse<String>> editUser(@PathVariable Integer id, @Valid @RequestBody EditUserRequest request) {
         userService.editUser(id,request);
         return ResponseEntity.ok().body(new OKMessageResponse<>("L'utilisateur a été modifié"));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteUser(@PathVariable Integer id, @Valid @RequestBody EditUserRequest request) {
+    public ResponseEntity<OKMessageResponse<String>> deleteUser(@PathVariable Integer id, @Valid @RequestBody EditUserRequest request) {
         userService.deleteUser(id);
         return ResponseEntity.ok().body(new OKMessageResponse<>("L'utilisateur a été supprimé"));
     }

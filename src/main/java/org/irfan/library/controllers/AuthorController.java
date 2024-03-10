@@ -28,7 +28,7 @@ public class AuthorController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<AuthorWithBooksDTO>> getAuthor(
+    public ResponseEntity<List<AuthorWithBooksDTO>> getAuthors(
             @RequestParam(value = "id", required = false) Optional<Long> id,
             @RequestParam(value = "firstname", required = false) Optional<String> firstname,
             @RequestParam(value = "lastname", required = false) Optional<String> lastname,

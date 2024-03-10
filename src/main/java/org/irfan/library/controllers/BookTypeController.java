@@ -25,21 +25,20 @@ public class BookTypeController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getBookTypes(@RequestParam(value = "name", required = false) Optional<String> name,
-                                          @RequestParam(defaultValue = "0") int page,
-                                          @RequestParam(defaultValue = "3") int size) {
-        if (name.isPresent() && !name.get().isEmpty()) {
-            return bookTypeService.getBookTypeByName(name.get())
-                    .map(bookType -> ResponseEntity.ok().body(bookType))
-                    .orElse(ResponseEntity.notFound().build());
-        } else {
-            List<BookTypeDTO> bookTypes = bookTypeService.getAllBookTypes(page, size);
-            return !bookTypes.isEmpty() ? ResponseEntity.ok().body(bookTypes) : ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<List<BookTypeDTO>> getBookTypes(@RequestParam(defaultValue = "0") int page,
+                                                          @RequestParam(defaultValue = "3") int size) {
+        List<BookTypeDTO> bookTypes = bookTypeService.getAllBookTypes(page, size);
+        return !bookTypes.isEmpty() ? ResponseEntity.ok().body(bookTypes) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BookTypeDTO> getBookTypeById(@PathVariable Integer id) {
+        BookTypeDTO bookType = bookTypeService.getBookTypeById(id);
+        return ResponseEntity.ok(bookType);
     }
 
     @PostMapping()
-    public ResponseEntity<?> createBookType(@Valid @RequestBody CreateBookTypeRequest request){
+    public ResponseEntity<OKMessageResponse<String>> createBookType(@Valid @RequestBody CreateBookTypeRequest request){
         bookTypeService.createBookType(request.getName());
         return ResponseEntity.ok(new OKMessageResponse<>("Le type de livre " + request.getName() + " a été crée"));
     }
