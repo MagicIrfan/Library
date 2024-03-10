@@ -13,16 +13,15 @@ import java.util.Optional;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
-    private final UserRepository userRepository;
+    private final UserService userService;
     @Autowired
-    public MyUserDetailsService(UserRepository userRepository){
-        this.userRepository = userRepository;
+    public MyUserDetailsService(UserService userService){
+        this.userService = userService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        final User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+        final User user = userService.getUserEntityByUsername(username);
         List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole().getName()));
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
