@@ -45,19 +45,21 @@ public class BookServiceUnitTest {
     private AuthorRepository authorRepository;
     @Mock
     private BookTypeRepository bookTypeRepository;
-    private final ModelMapper modelMapper = new ModelMapper(); // Initialisation directe
+    private ModelMapper modelMapper;
     private BookService bookService;
     private AuthorService authorService;
     private BookTypeService bookTypeService;
 
     @BeforeEach
     public void setUp() {
-        // Initialisation de BookService avec les mocks et modelMapper
+        // Initialisation des services
+        modelMapper = new ModelMapper();
+        authorService = new AuthorService(authorRepository,modelMapper);
+        bookTypeService = new BookTypeService(bookTypeRepository,modelMapper);
         bookService = new BookService(bookRepository, authorService, modelMapper, bookTypeService);
     }
 
     @Test
-    @Disabled
     public void whenFindBooksByAuthor_thenReturnBookList() {
         // Given
         Type type = new Type("Roman");
@@ -79,7 +81,6 @@ public class BookServiceUnitTest {
     }
 
     @Test
-    @Disabled
     public void whenFindBooksById_thenReturnBook() {
         // Given
         Type type = new Type("Roman");
@@ -98,17 +99,16 @@ public class BookServiceUnitTest {
     }
 
     @Test
-    @Disabled
-    public void whenCreateBook_thenCreateBook() {
+    public void whenCreateBook_thenBookIsCreated() {
         // Given
-        Type type = new Type("Roman");
+        Type type = new Type(1,"Roman");
         Author author = new Author(1L,"Victor", "Hugo", new ArrayList<>());
         Book book1 = new Book(1L,"Les Misérables", author,type);
 
         when(authorRepository.findById(Math.toIntExact(author.getId()))).thenReturn(Optional.of(author));
         when(bookTypeRepository.findById(type.getId())).thenReturn(Optional.of(type));
         when(bookRepository.existsByTitle(book1.getTitle())).thenReturn(false);
-        when(bookRepository.save(any(Book.class))).thenAnswer(i -> i.getArguments()[0]);
+        when(bookRepository.save(any(Book.class))).thenAnswer(a -> a.getArguments()[0]);
 
         //When
         bookService.createBook(new CreateBookRequest(Math.toIntExact(author.getId()),type.getId(),book1.getTitle()));
@@ -125,7 +125,6 @@ public class BookServiceUnitTest {
     }
 
     @Test
-    @Disabled
     public void whenEditBookType_thenBookTypeIsUpdated() {
         // Given
         EditBookRequest request = new EditBookRequest();
@@ -154,7 +153,6 @@ public class BookServiceUnitTest {
     }
 
     @Test
-    @Disabled
     public void whenEditBook_thenBookIsUpdated() {
         // Given
         String newTitle = "One Piece";
@@ -189,7 +187,6 @@ public class BookServiceUnitTest {
     }
 
     @Test
-    @Disabled
     public void whenEditBookAndBookNotFound_thenThrowsException() {
         // Given
         int nonExistentBookId = 999;
