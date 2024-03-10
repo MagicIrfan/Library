@@ -187,6 +187,19 @@ public class BookServiceUnitTest {
     }
 
     @Test
+    public void whenDeleteBook_thenBookIsDeleted(){
+        // Given
+        long bookId = 1L; // Use the ID directly for clarity
+        when(bookRepository.existsById((int) bookId)).thenReturn(true);
+
+        // When
+        bookService.deleteBook((int) bookId);
+
+        // Then
+        verify(bookRepository).deleteById((int) bookId);
+    }
+
+    @Test
     public void whenEditBookAndBookNotFound_thenThrowsException() {
         // Given
         int nonExistentBookId = 999;
@@ -197,6 +210,19 @@ public class BookServiceUnitTest {
         // When & Then
         assertThrows(EntityNotFoundException.class, () -> {
             bookService.editBook(nonExistentBookId, request);
+        });
+    }
+
+    @Test
+    public void whenDeleteBookAndBookNotFound_thenThrowsException(){
+        // Given
+        int nonExistentBookId = 999;
+
+        when(bookRepository.existsById(nonExistentBookId)).thenReturn(false);
+
+        // When & Then
+        assertThrows(EntityNotFoundException.class, () -> {
+            bookService.deleteBook(nonExistentBookId);
         });
     }
 }
