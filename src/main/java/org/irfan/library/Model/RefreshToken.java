@@ -11,9 +11,9 @@ import java.time.Instant;
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class RefreshToken {
 
     @Id

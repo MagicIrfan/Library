@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class TokenBlacklist {
 
     @Id

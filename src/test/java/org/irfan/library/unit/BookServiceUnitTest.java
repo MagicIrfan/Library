@@ -8,6 +8,7 @@ import org.irfan.library.dao.BookRepository;
 import org.irfan.library.dao.BookTypeRepository;
 import org.irfan.library.dto.BookDTO;
 import org.irfan.library.dto.request.CreateBookRequest;
+import org.irfan.library.dto.request.EditBookRequest;
 import org.irfan.library.services.BookService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -112,5 +113,62 @@ public class BookServiceUnitTest {
         assertEquals(book1.getTitle(), savedBook.getTitle());
         assertEquals(author.getId(), savedBook.getAuthor().getId());
         assertEquals(type.getId(), savedBook.getType().getId());
+    }
+
+    @Test
+    public void whenEditBookType_thenBookTypeIsUpdated() {
+        // Given
+        EditBookRequest request = new EditBookRequest();
+        Type type = new Type(1,"Roman");
+        Type type2 = new Type(2,"Manga");
+        request.setBooktype_id(type2.getId());
+        Author author = new Author(1L,"Victor", "Hugo", new ArrayList<>());
+        Book book1 = new Book(1L,"Les Misérables", author,type);
+
+        when(bookTypeRepository.findById(type2.getId())).thenReturn(Optional.of(type2));
+        when(bookRepository.findById(Math.toIntExact(book1.getId()))).thenReturn(Optional.of(book1));
+        when(bookRepository.save(any(Book.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        //When
+        bookService.editBook(Math.toIntExact(book1.getId()),request);
+
+        // Then
+        ArgumentCaptor<Book> bookArgumentCaptor = ArgumentCaptor.forClass(Book.class);
+        verify(bookRepository).save(bookArgumentCaptor.capture());
+        Book savedBook = bookArgumentCaptor.getValue();
+
+        assertNotNull(savedBook);
+        assertEquals(type2, savedBook.getType());
+        assertEquals(author, savedBook.getAuthor());
+        assertEquals(book1.getTitle(), savedBook.getTitle());
+    }
+
+    @Test
+    public void whenEditBook_thenBookIsUpdated() {
+        // Given
+        EditBookRequest request = new EditBookRequest();
+        Type type = new Type(1,"Roman");
+        Type type2 = new Type(2,"Manga");
+        request.setBooktype_id(type2.getId());
+        Author author = new Author(1L,"Victor", "Hugo", new ArrayList<>());
+        Author author2 = new Author(2L,"Irfan", "BOUHENAF", new ArrayList<>());
+        Book book1 = new Book(1L,"Les Misérables", author,type);
+
+        when(bookTypeRepository.findById(type2.getId())).thenReturn(Optional.of(type2));
+        when(bookRepository.findById(Math.toIntExact(book1.getId()))).thenReturn(Optional.of(book1));
+        when(bookRepository.save(any(Book.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        //When
+        bookService.editBook(Math.toIntExact(book1.getId()),request);
+
+        // Then
+        ArgumentCaptor<Book> bookArgumentCaptor = ArgumentCaptor.forClass(Book.class);
+        verify(bookRepository).save(bookArgumentCaptor.capture());
+        Book savedBook = bookArgumentCaptor.getValue();
+
+        assertNotNull(savedBook);
+        assertEquals(type2, savedBook.getType());
+        assertEquals(author, savedBook.getAuthor());
+        assertEquals(book1.getTitle(), savedBook.getTitle());
     }
 }
