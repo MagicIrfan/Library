@@ -49,9 +49,9 @@ public class AuthorController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<OKMessageResponse<String>> editAuthor(@PathVariable Integer id, @Valid @RequestBody EditAuthorRequest request){
-        authorService.editAuthor(id, request);
-        return ResponseEntity.ok(new OKMessageResponse<>("L'auteur " + request.getFirstname() + " " + request.getLastname() + " a été crée"));
+    public ResponseEntity<AuthorDTO> editAuthor(@PathVariable Integer id, @Valid @RequestBody EditAuthorRequest request){
+        AuthorDTO editedAuthor = authorService.editAuthor(id, request);
+        return ResponseEntity.ok(editedAuthor);
     }
 
     @DeleteMapping("/{id}")

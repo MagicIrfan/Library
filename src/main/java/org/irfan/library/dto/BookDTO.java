@@ -1,16 +1,14 @@
 package org.irfan.library.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Setter
-@Getter
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookDTO {
-    String title;
-    AuthorDTO author;
-    BookTypeDTO bookType;
+    private Integer id;
+    private String title;
+    private AuthorDTO author;
+    private BookTypeDTO bookType;
 }
