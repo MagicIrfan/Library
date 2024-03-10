@@ -36,10 +36,16 @@ public class AuthorController {
         return ResponseEntity.ok().body(authorService.getAuthorsByCriteria(id,firstname,lastname,bookId));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<AuthorDTO> getAuthorById(@PathVariable Integer id) {
+        AuthorDTO authorDTO = authorService.getAuthorById(id);
+        return ResponseEntity.ok(authorDTO);
+    }
+
     @PostMapping()
-    public ResponseEntity<OKMessageResponse<String>> createAuthor(@Valid @RequestBody CreateAuthorRequest request){
-        authorService.createAuthor(request);
-        return ResponseEntity.ok(new OKMessageResponse<>("L'auteur " + request.getFirstname() + " " + request.getLastname() + " a été crée"));
+    public ResponseEntity<AuthorDTO> createAuthor(@Valid @RequestBody CreateAuthorRequest request){
+        AuthorDTO newAuthor = authorService.createAuthor(request);
+        return ResponseEntity.ok(newAuthor);
     }
 
     @PatchMapping("/{id}")
@@ -49,20 +55,8 @@ public class AuthorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<OKMessageResponse<String>> deleteAuthor(@PathVariable Integer id){
+    public ResponseEntity<OKMessageResponse<String>> deleteAuthor(@PathVariable Integer id) {
         authorService.deleteAuthor(id);
         return ResponseEntity.ok(new OKMessageResponse<>("L'auteur est supprimé"));
-    }
-
-    @PostMapping("/{id}/books")
-    public ResponseEntity<OKMessageResponse<String>> addBookToAuthor(@PathVariable Integer id, @Valid @RequestBody AddBookToAuthorRequest request){
-        authorService.addBookToAuthor(id,request);
-        return ResponseEntity.ok(new OKMessageResponse<>("Le livre a été ajouté"));
-    }
-
-    @GetMapping("/{id}/books")
-    public ResponseEntity<List<BookWithoutAuthorDTO>> getBooksOfAuthor(@PathVariable Integer id){
-        List<BookWithoutAuthorDTO> books = authorService.getBooksOfAuthor(id);
-        return ResponseEntity.ok(books);
     }
 }

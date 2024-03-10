@@ -7,10 +7,13 @@ import org.irfan.library.Model.Type;
 import org.irfan.library.dao.AuthorRepository;
 import org.irfan.library.dao.BookRepository;
 import org.irfan.library.dao.BookTypeRepository;
+import org.irfan.library.dto.AuthorDTO;
 import org.irfan.library.dto.AuthorWithBooksDTO;
+import org.irfan.library.dto.BookTypeDTO;
 import org.irfan.library.dto.BookWithoutAuthorDTO;
 import org.irfan.library.dto.request.AddBookToAuthorRequest;
 import org.irfan.library.dto.request.CreateAuthorRequest;
+import org.irfan.library.dto.request.CreateBookRequest;
 import org.irfan.library.dto.request.EditAuthorRequest;
 import org.irfan.library.exception.DuplicateDataException;
 import org.modelmapper.ModelMapper;
@@ -26,18 +29,12 @@ import java.util.Optional;
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
-    private final BookRepository bookRepository;
-    private final BookTypeRepository bookTypeRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
     public AuthorService(AuthorRepository authorRepository,
-                         BookRepository bookRepository,
-                         BookTypeRepository bookTypeRepository,
                          ModelMapper modelMapper) {
         this.authorRepository = authorRepository;
-        this.bookRepository = bookRepository;
-        this.bookTypeRepository = bookTypeRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -48,18 +45,26 @@ public class AuthorService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public AuthorDTO getAuthorById(Integer id){
+        return authorRepository.findById(id)
+                .map(author -> modelMapper.map(author,AuthorDTO.class))
+                .orElseThrow(() -> new EntityNotFoundException("Auteur non trouvé avec l'id " + id));
+    }
+
     @Transactional
-    public void createAuthor(CreateAuthorRequest request){
+    public AuthorDTO createAuthor(CreateAuthorRequest request){
         if(authorRepository.existsByFirstnameAndLastname(request.getFirstname(), request.getLastname())){
             throw new DuplicateDataException("Vous ne pouvez pas ajouter cet auteur, car il existe déjà");
         }
-        authorRepository.save(new Author(request.getFirstname(),request.getLastname()));
+        Author author = authorRepository.save(new Author(request.getFirstname(),request.getLastname()));
+        return modelMapper.map(author,AuthorDTO.class);
     }
 
     @Transactional
     public void editAuthor(Integer id, EditAuthorRequest request){
         Author author = authorRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Pas trouvé"));
+                .orElseThrow(() -> new EntityNotFoundException("L'auteur n'existe pas avec l'id " + id));
         Optional.ofNullable(request.getFirstname())
                 .filter(StringUtils::hasText)
                 .ifPresent(author::setFirstname);
@@ -73,27 +78,8 @@ public class AuthorService {
     public void deleteAuthor(Integer id){
         boolean authorExists = authorRepository.existsById(id);
         if(!authorExists){
-            throw new EntityNotFoundException("Trouvé");
+            throw new EntityNotFoundException("L'auteur n'existe pas avec l'id " + id);
         }
         authorRepository.deleteById(id);
-    }
-
-    @Transactional
-    public void addBookToAuthor(Integer id, AddBookToAuthorRequest request) {
-        Author author = authorRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Pas trouvé"));
-        Type bookType = bookTypeRepository.findById(request.getBooktype_id())
-                .orElseThrow(() -> new EntityNotFoundException("Type de livre non trouvé avec l'ID: " + request.getBooktype_id()));
-        if (bookRepository.existsByTitle(request.getTitle())) {
-            throw new DuplicateDataException("Ce livre existe déjà !");
-        }
-        bookRepository.save(new Book(request.getTitle(),author,bookType));
-    }
-
-    public List<BookWithoutAuthorDTO> getBooksOfAuthor(Integer id) {
-        return bookRepository.findAllByAuthor_Id(Long.valueOf(id))
-                .stream()
-                .map(book -> modelMapper.map(book, BookWithoutAuthorDTO.class))
-                .toList();
     }
 }

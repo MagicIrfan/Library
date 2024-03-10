@@ -10,6 +10,7 @@ import org.irfan.library.dao.BookTypeRepository;
 import org.irfan.library.dto.AuthorDTO;
 import org.irfan.library.dto.BookDTO;
 import org.irfan.library.dto.BookTypeDTO;
+import org.irfan.library.dto.BookWithoutAuthorDTO;
 import org.irfan.library.dto.request.CreateBookRequest;
 import org.irfan.library.dto.request.EditBookRequest;
 import org.irfan.library.exception.DuplicateDataException;
@@ -51,7 +52,20 @@ public class BookService {
     public BookDTO getBookById(Integer id){
         return bookRepository.findById(id)
                 .map(book -> modelMapper.map(book,BookDTO.class))
-                .orElseThrow();
+                .orElseThrow(() -> new EntityNotFoundException("Livre non trouvé avec l'id " + id));
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookWithoutAuthorDTO> getBooksByAuthorId(Integer authorId){
+        return bookRepository.findAllByAuthor_Id(Long.valueOf(authorId))
+                .stream()
+                .map(book -> modelMapper.map(book, BookWithoutAuthorDTO.class))
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existsByTitle(String title){
+        return bookRepository.existsByTitle(title);
     }
 
     @Transactional
