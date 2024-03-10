@@ -3,6 +3,7 @@ package org.irfan.library.controllers;
 import jakarta.validation.Valid;
 import org.irfan.library.dto.*;
 import org.irfan.library.dto.request.CreateBookTypeRequest;
+import org.irfan.library.dto.request.EditBookRequest;
 import org.irfan.library.dto.response.ErrorMessageResponse;
 import org.irfan.library.dto.response.OKMessageResponse;
 import org.irfan.library.services.BookTypeService;
@@ -25,9 +26,8 @@ public class BookTypeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BookTypeDTO>> getBookTypes(@RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "3") int size) {
-        List<BookTypeDTO> bookTypes = bookTypeService.getAllBookTypes(page, size);
+    public ResponseEntity<List<BookTypeDTO>> getBookTypes() {
+        List<BookTypeDTO> bookTypes = bookTypeService.getAllBookTypes();
         return !bookTypes.isEmpty() ? ResponseEntity.ok().body(bookTypes) : ResponseEntity.notFound().build();
     }
 
@@ -38,8 +38,12 @@ public class BookTypeController {
     }
 
     @PostMapping()
-    public ResponseEntity<OKMessageResponse<String>> createBookType(@Valid @RequestBody CreateBookTypeRequest request){
-        bookTypeService.createBookType(request.getName());
-        return ResponseEntity.ok(new OKMessageResponse<>("Le type de livre " + request.getName() + " a été crée"));
+    public ResponseEntity<BookTypeDTO> createBookType(@Valid @RequestBody CreateBookTypeRequest request){
+        return ResponseEntity.ok(bookTypeService.createBookType(request.getName()));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<BookTypeDTO> editBookType(@PathVariable Integer id, @RequestBody String name){
+        return ResponseEntity.ok(bookTypeService.editBookType(id,name));
     }
 }

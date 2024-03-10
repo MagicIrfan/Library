@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<OKMessageResponse<String>> deleteUser(@PathVariable Integer id, @Valid @RequestBody EditUserRequest request) {
+    public ResponseEntity<OKMessageResponse<String>> deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);
         return ResponseEntity.ok().body(new OKMessageResponse<>("L'utilisateur a été supprimé"));
     }
@@ -46,13 +46,13 @@ public class UserController {
     public ResponseEntity<UserDTO> getUser(@RequestParam(name = "id", required = false) Optional<Integer> id,
                                           @RequestParam(name = "username", required = false) Optional<String> username,
                                           @RequestParam(name = "email", required = false) Optional<String> email) {
-        Optional<UserDTO> userDTO = userService.getUser(id,username,email);
-        return userDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        UserDTO userDTO = userService.getUserByCriterias(id,username,email);
+        return ResponseEntity.ok(userDTO);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable(name = "id") Integer id){
-        Optional<UserDTO> userDTO = userService.getUserById(id);
-        return userDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        UserDTO userDTO = userService.getUserById(id);
+        return ResponseEntity.ok(userDTO);
     }
 }

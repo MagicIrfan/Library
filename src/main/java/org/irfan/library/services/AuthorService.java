@@ -2,18 +2,9 @@ package org.irfan.library.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.irfan.library.Model.Author;
-import org.irfan.library.Model.Book;
-import org.irfan.library.Model.Type;
 import org.irfan.library.dao.AuthorRepository;
-import org.irfan.library.dao.BookRepository;
-import org.irfan.library.dao.BookTypeRepository;
 import org.irfan.library.dto.AuthorDTO;
-import org.irfan.library.dto.AuthorWithBooksDTO;
-import org.irfan.library.dto.BookTypeDTO;
-import org.irfan.library.dto.BookWithoutAuthorDTO;
-import org.irfan.library.dto.request.AddBookToAuthorRequest;
 import org.irfan.library.dto.request.CreateAuthorRequest;
-import org.irfan.library.dto.request.CreateBookRequest;
 import org.irfan.library.dto.request.EditAuthorRequest;
 import org.irfan.library.exception.DuplicateDataException;
 import org.modelmapper.ModelMapper;
@@ -39,16 +30,21 @@ public class AuthorService {
     }
 
     @Transactional(readOnly = true)
-    public List<AuthorWithBooksDTO> getAuthorsByCriteria(Optional<Long> id, Optional<String> firstname, Optional<String> lastname, Optional<Long> bookId) {
+    public List<AuthorDTO> getAuthorsByCriteria(Optional<Long> id, Optional<String> firstname, Optional<String> lastname, Optional<Long> bookId) {
         return authorRepository.findAuthorsCustom(id,firstname,lastname,bookId).stream()
-                .map(author -> modelMapper.map(author,AuthorWithBooksDTO.class))
+                .map(author -> modelMapper.map(author,AuthorDTO.class))
                 .toList();
     }
 
     @Transactional(readOnly = true)
     public AuthorDTO getAuthorById(Integer id){
+        Author author = getAuthorEntityById(id);
+        return modelMapper.map(author,AuthorDTO.class);
+    }
+
+    @Transactional(readOnly = true)
+    public Author getAuthorEntityById(Integer id){
         return authorRepository.findById(id)
-                .map(author -> modelMapper.map(author,AuthorDTO.class))
                 .orElseThrow(() -> new EntityNotFoundException("Auteur non trouvé avec l'id " + id));
     }
 

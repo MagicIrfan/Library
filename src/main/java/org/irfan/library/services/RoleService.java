@@ -1,5 +1,6 @@
 package org.irfan.library.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.irfan.library.Model.Role;
 import org.irfan.library.dao.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,8 @@ public class RoleService {
     public RoleService(RoleRepository roleRepository){
         this.roleRepository = roleRepository;
     }
-    public Optional<Role> getRole(String name){
-        return roleRepository.findByName(name);
+    public Role getRole(String name){
+        return roleRepository.findByName(name)
+                .orElseThrow(() -> new EntityNotFoundException("Rôle non trouvé avec le nom: " + name));
     }
 }

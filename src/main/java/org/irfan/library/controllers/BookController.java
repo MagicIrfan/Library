@@ -35,9 +35,9 @@ public class BookController {
     }
 
     @PostMapping()
-    public ResponseEntity<OKMessageResponse<String>> createBook(@Valid @RequestBody CreateBookRequest request){
-        bookService.createBook(request);
-        return ResponseEntity.ok(new OKMessageResponse<>("Livre créé avec succès."));
+    public ResponseEntity<BookDTO> createBook(@Valid @RequestBody CreateBookRequest request){
+        BookDTO newBook = bookService.createBook(request);
+        return ResponseEntity.ok(newBook);
     }
 
     @PatchMapping("/{id}")

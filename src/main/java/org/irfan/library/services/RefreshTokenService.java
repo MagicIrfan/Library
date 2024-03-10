@@ -17,19 +17,18 @@ import java.util.UUID;
 public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     @Value("${app.refreshTokenExpirationMs}")
     private int refreshTokenExpirationMs;
 
     @Autowired
-    public RefreshTokenService(RefreshTokenRepository refreshTokenRepository, UserRepository userRepository){
+    public RefreshTokenService(RefreshTokenRepository refreshTokenRepository, UserService userService){
         this.refreshTokenRepository = refreshTokenRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public RefreshToken createRefreshToken(String username){
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("User pas trouvé"));
+        User user = userService.getUserEntityByUsername(username);
         RefreshToken refreshToken = RefreshToken.builder()
                 .userInfo(user)
                 .token(UUID.randomUUID().toString())

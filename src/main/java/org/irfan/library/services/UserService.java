@@ -17,7 +17,6 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
@@ -31,8 +30,7 @@ public class UserService {
 
     @Transactional
     public void editUser(Integer id, EditUserRequest request){
-        User user = userRepository.findById(id)
-                .orElseThrow(()->new EntityNotFoundException("Utilisateur non trouvé avec l'ID " + id));
+        User user = getUserEntityById(id);
         Optional.ofNullable(request.getEmail())
                 .filter(StringUtils::hasText)
                 .ifPresent(user::setEmail);
@@ -54,6 +52,11 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    @Transactional
+    public void addUser(User user){
+        userRepository.save(user);
+    }
+
     @Transactional(readOnly = true)
     public List<UserDTO> getAllUsers(){
         return userRepository.findAll()
@@ -63,14 +66,12 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<UserDTO> getUserById(Integer id){
-        return Optional.ofNullable(userRepository.findById(id)
-                .map(user -> modelMapper.map(user, UserDTO.class))
-                .orElseThrow(() -> new EntityNotFoundException("User pas trouvé")));
+    public UserDTO getUserById(Integer id){
+        return modelMapper.map(getUserEntityById(id), UserDTO.class);
     }
 
     @Transactional(readOnly = true)
-    public Optional<UserDTO> getUser(Optional<Integer> id, Optional<String> username, Optional<String> email){
+    public UserDTO getUserByCriterias(Optional<Integer> id, Optional<String> username, Optional<String> email){
         Optional<User> userOptional = Optional.empty();
         if (username.isPresent() && !username.get().isEmpty() && email.isPresent() && !email.get().isEmpty()) {
             userOptional = userRepository.findByUsernameAndEmail(username.get(), email.get());
@@ -84,6 +85,24 @@ public class UserService {
         else if (id.isPresent()) {
             userOptional = userRepository.findById(id.get());
         }
-        return userOptional.map(user -> modelMapper.map(user, UserDTO.class));
+        return userOptional.map(user -> modelMapper.map(user, UserDTO.class))
+                .orElseThrow(() -> new EntityNotFoundException("L'utilisateur n'existe pas"));
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserEntityByUsername(String username){
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec le nom d'utilisateur: " + username));
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserEntityById(Integer id){
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'ID': " + id));
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existsByUsernameOrEmail(String username, String email){
+        return userRepository.existsByUsernameOrEmail(username,email);
     }
 }

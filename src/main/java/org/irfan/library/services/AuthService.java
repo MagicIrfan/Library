@@ -25,38 +25,36 @@ import java.util.Optional;
 @Service
 public class AuthService {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final PasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenService tokenProvider;
     private final RoleService roleService;
-    private final TokenBlacklistRepository tokenBlacklistRepository;
+    private final TokenBlacklistService tokenBlacklistService;
 
     @Autowired
-    public AuthService(UserRepository userRepository,
+    public AuthService(UserService userService,
                        PasswordEncoder bCryptPasswordEncoder,
                        AuthenticationManager authenticationManager,
                        JwtTokenService tokenProvider,
                        RoleService roleService,
-                       TokenBlacklistRepository tokenBlacklistRepository) {
-        this.userRepository = userRepository;
+                       TokenBlacklistService tokenBlacklistService) {
+        this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;
         this.roleService = roleService;
-        this.tokenBlacklistRepository = tokenBlacklistRepository;
+        this.tokenBlacklistService = tokenBlacklistService;
     }
 
     @Transactional
     public void signUp(String username, String email, String password){
-        Optional<Role> role = roleService.getRole(RoleEnum.USER.toString());
-        if(role.isPresent()){
-            Optional<User> user = Optional.of(new User(role.get(), username, email, bCryptPasswordEncoder.encode(password)));
-            if(userExists(username,email)){
-                throw new DuplicateDataException("L'utilisateur existe déjà");
-            }
-            userRepository.save(user.get());
+        Role role = roleService.getRole(RoleEnum.USER.toString());
+        User user = new User(role, username, email, bCryptPasswordEncoder.encode(password));
+        if(userExists(username,email)){
+            throw new DuplicateDataException("L'utilisateur existe déjà");
         }
+        userService.addUser(user);
     }
 
     public String login(String username, String password) throws Exception {
@@ -76,21 +74,20 @@ public class AuthService {
     }
 
     private boolean userExists(String username, String email){
-        return Optional.ofNullable(userRepository.findByUsernameOrEmail(username,email)).isPresent();
+        return userService.existsByUsernameOrEmail(username,email);
     }
 
     public void logout(LogoutRequest request){
         String token = request.getToken();
-        if(tokenBlacklistRepository.existsByToken(token)){
+        if(tokenBlacklistService.existsByToken(token)){
             throw new DuplicateDataException("Le token existe déjà !");
         }
-        User user = userRepository.findByUsername(tokenProvider.getUsernameFromToken(token))
-                .orElseThrow(() -> new EntityNotFoundException("User pas trouvé"));
+        User user = userService.getUserEntityByUsername(tokenProvider.getUsernameFromToken(token));
         TokenBlacklist tokenToBlacklist = TokenBlacklist
                 .builder()
                 .token(token)
                 .userInfo(user)
                 .build();
-        tokenBlacklistRepository.save(tokenToBlacklist);
+        tokenBlacklistService.addTokenOnBlackList(tokenToBlacklist);
     }
 }

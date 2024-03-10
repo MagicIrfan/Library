@@ -31,38 +31,48 @@ public class BookTypeService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<BookTypeDTO> getBookTypeByName(String name){
-        return bookTypeRepository.findByName(name)
-                .map(bookType -> new BookTypeDTO(bookType.getName()));
-    }
-
-    @Transactional(readOnly = true)
-    public List<BookTypeDTO> getAllBookTypes(int page, int size){
-        Pageable paging = PageRequest.of(page, size);
-        Page<Type> pagedResult = bookTypeRepository.findAll(paging); // Use paging here
-
-        if (pagedResult.hasContent()) {
-            return pagedResult.getContent()
+    public List<BookTypeDTO> getAllBookTypes(){
+        return bookTypeRepository.findAll()
                     .stream()
-                    .map(bookType -> new BookTypeDTO(bookType.getName()))
+                    .map(bookType -> modelMapper.map(bookType,BookTypeDTO.class))
                     .toList();
-        } else {
-            return new ArrayList<BookTypeDTO>();
-        }
     }
 
     @Transactional(readOnly = true)
     public BookTypeDTO getBookTypeById(Integer id){
+        Type bookType = getBookTypeEntityById(id);
+        return modelMapper.map(bookType,BookTypeDTO.class);
+    }
+
+    @Transactional(readOnly = true)
+    public Type getBookTypeEntityById(Integer id){
         return bookTypeRepository.findById(id)
-                .map(bookType -> modelMapper.map(bookType, BookTypeDTO.class))
                 .orElseThrow(() -> new EntityNotFoundException("BookType with ID " + id + " not found"));
     }
 
     @Transactional
-    public void createBookType(String name){
+    public BookTypeDTO createBookType(String name){
         if(bookTypeRepository.existsByName(name)){
             throw new DuplicateDataException("Vous ne pouvez pas ajouter ce type de livre, car il existe déjà");
         }
-        bookTypeRepository.save(new Type(name));
+        Type newBookType = bookTypeRepository.save(new Type(name));
+        return modelMapper.map(newBookType,BookTypeDTO.class);
+    }
+
+    @Transactional
+    public BookTypeDTO editBookType(Integer id, String name){
+        Type oldBookType = getBookTypeEntityById(id);
+        oldBookType.setName(name);
+        Type newBookType = bookTypeRepository.save(oldBookType);
+        return modelMapper.map(newBookType,BookTypeDTO.class);
+    }
+
+    @Transactional
+    public void deleteBookType(Integer id){
+        boolean exists = bookTypeRepository.existsById(id);
+        if (!exists) {
+            throw new EntityNotFoundException("Aucun type de livre trouvé avec l'ID: " + id);
+        }
+        bookTypeRepository.deleteById(id);
     }
 }

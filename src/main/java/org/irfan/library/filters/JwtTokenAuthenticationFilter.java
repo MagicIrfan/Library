@@ -32,7 +32,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         try {
             Optional<String> tokenOptional = getJwtFromRequest(request);
-            if (!tokenOptional.isPresent()) {
+            if (tokenOptional.isEmpty()) {
                 throw new ServletException("Token JWT absent dans la requête.");
             }
             String token = tokenOptional.get();
