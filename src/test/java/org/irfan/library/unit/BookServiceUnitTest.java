@@ -146,19 +146,24 @@ public class BookServiceUnitTest {
     @Test
     public void whenEditBook_thenBookIsUpdated() {
         // Given
-        EditBookRequest request = new EditBookRequest();
+        String newTitle = "One Piece";
         Type type = new Type(1,"Roman");
         Type type2 = new Type(2,"Manga");
-        request.setBooktype_id(type2.getId());
         Author author = new Author(1L,"Victor", "Hugo", new ArrayList<>());
         Author author2 = new Author(2L,"Irfan", "BOUHENAF", new ArrayList<>());
         Book book1 = new Book(1L,"Les Misérables", author,type);
+        EditBookRequest request = EditBookRequest.builder()
+                .title(newTitle)
+                .booktype_id(type2.getId())
+                .author_id(Math.toIntExact(author2.getId()))
+                .build();
 
+        when(authorRepository.findById(Math.toIntExact(author2.getId()))).thenReturn(Optional.of(author2));
         when(bookTypeRepository.findById(type2.getId())).thenReturn(Optional.of(type2));
         when(bookRepository.findById(Math.toIntExact(book1.getId()))).thenReturn(Optional.of(book1));
         when(bookRepository.save(any(Book.class))).thenAnswer(i -> i.getArguments()[0]);
 
-        //When
+        // When
         bookService.editBook(Math.toIntExact(book1.getId()),request);
 
         // Then
@@ -167,8 +172,8 @@ public class BookServiceUnitTest {
         Book savedBook = bookArgumentCaptor.getValue();
 
         assertNotNull(savedBook);
+        assertEquals(newTitle, savedBook.getTitle());
         assertEquals(type2, savedBook.getType());
-        assertEquals(author, savedBook.getAuthor());
-        assertEquals(book1.getTitle(), savedBook.getTitle());
+        assertEquals(author2, savedBook.getAuthor());
     }
 }
