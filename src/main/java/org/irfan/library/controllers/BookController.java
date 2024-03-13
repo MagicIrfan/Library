@@ -26,10 +26,10 @@ public class BookController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<BookDTO>> getBooks(@RequestParam(value = "id", required = false) Optional<Long> id,
+    public ResponseEntity<List<BookDTO>> getBooks(@RequestParam(value = "id", required = false) Optional<Integer> id,
                                      @RequestParam(value = "title", required = false) Optional<String> title,
-                                     @RequestParam(value = "authorId", required = false) Optional<Long> authorId,
-                                     @RequestParam(value = "bookTypeId", required = false) Optional<Long> bookTypeId){
+                                     @RequestParam(value = "authorId", required = false) Optional<Integer> authorId,
+                                     @RequestParam(value = "bookTypeId", required = false) Optional<Integer> bookTypeId){
 
         return ResponseEntity.ok().body(bookService.getBookByCriterias(id,title,authorId,bookTypeId));
     }

@@ -63,7 +63,7 @@ public class BookServiceUnitTest {
     public void whenFindBooksByAuthor_thenReturnBookList() {
         // Given
         Type type = new Type("Roman");
-        Author author = new Author(1L,"Victor", "Hugo", new ArrayList<>());
+        Author author = new Author(1,"Victor", "Hugo", new ArrayList<>());
         Book book1 = new Book("Les Misérables", author,type);
         Book book2 = new Book("Le Dernier Jour d'un Condamné", author,type);
         List<Book> bookList = Arrays.asList(book1, book2);
@@ -84,16 +84,16 @@ public class BookServiceUnitTest {
     public void whenFindBooksById_thenReturnBook() {
         // Given
         Type type = new Type("Roman");
-        Author author = new Author(1L,"Victor", "Hugo", new ArrayList<>());
-        Book book1 = new Book(1L,"Les Misérables", author,type);
+        Author author = new Author(1,"Victor", "Hugo", new ArrayList<>());
+        Book book1 = new Book(1,"Les Misérables", author,type);
 
-        when(bookRepository.findById(Math.toIntExact(book1.getId()))).thenReturn(Optional.of(book1));
+        when(bookRepository.findById(book1.getId())).thenReturn(Optional.of(book1));
 
         // When
-        BookDTO result = bookService.getBookById(Math.toIntExact(book1.getId()));
+        BookDTO result = bookService.getBookById(book1.getId());
 
         // Then
-        verify(bookRepository).findById(Math.toIntExact(book1.getId()));
+        verify(bookRepository).findById(book1.getId());
         assertNotNull(result);
         assertEquals("Les Misérables",result.getTitle());
     }
@@ -102,16 +102,16 @@ public class BookServiceUnitTest {
     public void whenCreateBook_thenBookIsCreated() {
         // Given
         Type type = new Type(1,"Roman");
-        Author author = new Author(1L,"Victor", "Hugo", new ArrayList<>());
-        Book book1 = new Book(1L,"Les Misérables", author,type);
+        Author author = new Author(1,"Victor", "Hugo", new ArrayList<>());
+        Book book1 = new Book(1,"Les Misérables", author,type);
 
-        when(authorRepository.findById(Math.toIntExact(author.getId()))).thenReturn(Optional.of(author));
+        when(authorRepository.findById(author.getId())).thenReturn(Optional.of(author));
         when(bookTypeRepository.findById(type.getId())).thenReturn(Optional.of(type));
         when(bookRepository.existsByTitle(book1.getTitle())).thenReturn(false);
         when(bookRepository.save(any(Book.class))).thenAnswer(a -> a.getArguments()[0]);
 
         //When
-        bookService.createBook(new CreateBookRequest(Math.toIntExact(author.getId()),type.getId(),book1.getTitle()));
+        bookService.createBook(new CreateBookRequest(author.getId(),type.getId(),book1.getTitle()));
 
         // Then
         ArgumentCaptor<Book> bookArgumentCaptor = ArgumentCaptor.forClass(Book.class);
@@ -131,15 +131,15 @@ public class BookServiceUnitTest {
         Type type = new Type(1,"Roman");
         Type type2 = new Type(2,"Manga");
         request.setBooktype_id(type2.getId());
-        Author author = new Author(1L,"Victor", "Hugo", new ArrayList<>());
-        Book book1 = new Book(1L,"Les Misérables", author,type);
+        Author author = new Author(1,"Victor", "Hugo", new ArrayList<>());
+        Book book1 = new Book(1,"Les Misérables", author,type);
 
         when(bookTypeRepository.findById(type2.getId())).thenReturn(Optional.of(type2));
-        when(bookRepository.findById(Math.toIntExact(book1.getId()))).thenReturn(Optional.of(book1));
+        when(bookRepository.findById(book1.getId())).thenReturn(Optional.of(book1));
         when(bookRepository.save(any(Book.class))).thenAnswer(i -> i.getArguments()[0]);
 
         //When
-        bookService.editBook(Math.toIntExact(book1.getId()),request);
+        bookService.editBook(book1.getId(),request);
 
         // Then
         ArgumentCaptor<Book> bookArgumentCaptor = ArgumentCaptor.forClass(Book.class);
@@ -158,22 +158,22 @@ public class BookServiceUnitTest {
         String newTitle = "One Piece";
         Type type = new Type(1,"Roman");
         Type type2 = new Type(2,"Manga");
-        Author author = new Author(1L,"Victor", "Hugo", new ArrayList<>());
-        Author author2 = new Author(2L,"Irfan", "BOUHENAF", new ArrayList<>());
-        Book book1 = new Book(1L,"Les Misérables", author,type);
+        Author author = new Author(1,"Victor", "Hugo", new ArrayList<>());
+        Author author2 = new Author(2,"Irfan", "BOUHENAF", new ArrayList<>());
+        Book book1 = new Book(1,"Les Misérables", author,type);
         EditBookRequest request = EditBookRequest.builder()
                 .title(newTitle)
                 .booktype_id(type2.getId())
-                .author_id(Math.toIntExact(author2.getId()))
+                .author_id(author2.getId())
                 .build();
 
-        when(authorRepository.findById(Math.toIntExact(author2.getId()))).thenReturn(Optional.of(author2));
+        when(authorRepository.findById(author2.getId())).thenReturn(Optional.of(author2));
         when(bookTypeRepository.findById(type2.getId())).thenReturn(Optional.of(type2));
-        when(bookRepository.findById(Math.toIntExact(book1.getId()))).thenReturn(Optional.of(book1));
+        when(bookRepository.findById(book1.getId())).thenReturn(Optional.of(book1));
         when(bookRepository.save(any(Book.class))).thenAnswer(i -> i.getArguments()[0]);
 
         // When
-        bookService.editBook(Math.toIntExact(book1.getId()),request);
+        bookService.editBook(book1.getId(),request);
 
         // Then
         ArgumentCaptor<Book> bookArgumentCaptor = ArgumentCaptor.forClass(Book.class);
@@ -189,14 +189,14 @@ public class BookServiceUnitTest {
     @Test
     public void whenDeleteBook_thenBookIsDeleted(){
         // Given
-        long bookId = 1L; // Use the ID directly for clarity
-        when(bookRepository.existsById((int) bookId)).thenReturn(true);
+        Integer bookId = 1; // Use the ID directly for clarity
+        when(bookRepository.existsById(bookId)).thenReturn(true);
 
         // When
-        bookService.deleteBook((int) bookId);
+        bookService.deleteBook(bookId);
 
         // Then
-        verify(bookRepository).deleteById((int) bookId);
+        verify(bookRepository).deleteById(bookId);
     }
 
     @Test

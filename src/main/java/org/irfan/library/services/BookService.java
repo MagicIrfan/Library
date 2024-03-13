@@ -34,7 +34,7 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public List<BookDTO> getBookByCriterias(Optional<Long> id, Optional<String> title, Optional<Long> authorId, Optional<Long> bookTypeId){
+    public List<BookDTO> getBookByCriterias(Optional<Integer> id, Optional<String> title, Optional<Integer> authorId, Optional<Integer> bookTypeId){
         return bookRepository.findBooksCustom(id,title,authorId,bookTypeId)
                 .stream()
                 .map(book -> modelMapper.map(book, BookDTO.class))
@@ -50,7 +50,7 @@ public class BookService {
 
     @Transactional(readOnly = true)
     public List<BookWithoutAuthorDTO> getBooksByAuthorId(Integer authorId){
-        return bookRepository.findAllByAuthor_Id(Long.valueOf(authorId))
+        return bookRepository.findAllByAuthor_Id(authorId)
                 .stream()
                 .map(book -> modelMapper.map(book, BookWithoutAuthorDTO.class))
                 .toList();

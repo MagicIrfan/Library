@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface AuthorRepository extends JpaRepository<Author, Integer>, JpaSpecificationExecutor<Author> {
         Optional<Author> findByFirstnameAndLastname(String firstName, String lastName);
         boolean existsByFirstnameAndLastname(String firstName, String lastName);
-        default List<Author> findAuthorsCustom(Optional<Long> id, Optional<String> firstname, Optional<String> lastname, Optional<Long> bookId){
+        default List<Author> findAuthorsCustom(Optional<Integer> id, Optional<String> firstname, Optional<String> lastname, Optional<Integer> bookId){
                 Specification<Author> spec = (root, query, cb) -> {
                         List<Predicate> predicates = new ArrayList<>();
 

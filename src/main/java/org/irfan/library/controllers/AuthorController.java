@@ -29,10 +29,10 @@ public class AuthorController {
 
     @GetMapping()
     public ResponseEntity<List<AuthorDTO>> getAuthors(
-            @RequestParam(value = "id", required = false) Optional<Long> id,
+            @RequestParam(value = "id", required = false) Optional<Integer> id,
             @RequestParam(value = "firstname", required = false) Optional<String> firstname,
             @RequestParam(value = "lastname", required = false) Optional<String> lastname,
-            @RequestParam(value = "bookId", required = false) Optional<Long> bookId) {
+            @RequestParam(value = "bookId", required = false) Optional<Integer> bookId) {
         return ResponseEntity.ok().body(authorService.getAuthorsByCriteria(id,firstname,lastname,bookId));
     }
 

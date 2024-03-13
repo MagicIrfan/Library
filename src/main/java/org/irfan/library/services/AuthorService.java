@@ -30,7 +30,7 @@ public class AuthorService {
     }
 
     @Transactional(readOnly = true)
-    public List<AuthorDTO> getAuthorsByCriteria(Optional<Long> id, Optional<String> firstname, Optional<String> lastname, Optional<Long> bookId) {
+    public List<AuthorDTO> getAuthorsByCriteria(Optional<Integer> id, Optional<String> firstname, Optional<String> lastname, Optional<Integer> bookId) {
         return authorRepository.findAuthorsCustom(id,firstname,lastname,bookId).stream()
                 .map(author -> modelMapper.map(author,AuthorDTO.class))
                 .toList();
