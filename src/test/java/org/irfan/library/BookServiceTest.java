@@ -1,4 +1,4 @@
-package org.irfan.library.unit;
+package org.irfan.library;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.irfan.library.Model.Author;
@@ -13,18 +13,13 @@ import org.irfan.library.dto.request.EditBookRequest;
 import org.irfan.library.services.AuthorService;
 import org.irfan.library.services.BookService;
 import org.irfan.library.services.BookTypeService;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +32,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class BookServiceUnitTest {
+public class BookServiceTest {
 
     @Mock
     private BookRepository bookRepository;

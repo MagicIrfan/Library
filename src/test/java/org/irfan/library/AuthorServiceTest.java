@@ -1,23 +1,15 @@
-package org.irfan.library.unit;
+package org.irfan.library;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.irfan.library.Model.Author;
-import org.irfan.library.Model.Book;
-import org.irfan.library.Model.Type;
 import org.irfan.library.dao.AuthorRepository;
 import org.irfan.library.dto.AuthorDTO;
-import org.irfan.library.dto.BookDTO;
 import org.irfan.library.dto.request.CreateAuthorRequest;
-import org.irfan.library.dto.request.CreateBookRequest;
 import org.irfan.library.dto.request.EditAuthorRequest;
-import org.irfan.library.dto.request.EditBookRequest;
 import org.irfan.library.services.AuthorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -31,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthorServiceUnitTest {
+public class AuthorServiceTest {
     @Mock
     private AuthorRepository authorRepository;
     private ModelMapper modelMapper;
