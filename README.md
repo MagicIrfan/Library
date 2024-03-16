@@ -5,19 +5,21 @@
 Développer une API RESTful pour gérer une collection de livres, permettant les opérations CRUD (Créer, Lire, Mettre à jour, Supprimer) sur les livres.
 
 ## Fonctionnalités
-
+### Livres
 - **Création de livre**: Permettre aux administrateurs d'ajouter de nouveaux livres à la collection.
 - **Liste des livres**: Fournir une liste de tous les livres disponibles dans la collection.
 - **Détails d'un livre**: Afficher les détails d'un livre spécifique lorsque son ID est fourni.
 - **Mise à jour de livre**: Permettre la mise à jour des informations d'un livre existant.
 - **Suppression de livre**: Permettre la suppression d'un livre de la collection.
 
+### Auteurs
 - **Création d'un auteur**: Permettre aux administrateurs d'ajouter de nouveaux auteurs à la collection.
 - **Liste des auteurs**: Fournir une liste de tous les auteurs disponibles.
 - **Détails d'un auteur**: Afficher les détails d'un auteur spécifique lorsque son ID est fourni.
 - **Mise à jour d'un auteur**: Permettre la mise à jour des informations d'un auteur existant.
 - **Suppression d'un auteur**: Permettre la suppression d'un auteur de la collection.
 
+### Genres
 - **Création d'un genre**: Permettre aux administrateurs d'ajouter de nouveaux genres à la collection.
 - **Liste des genres**: Fournir une liste de tous les genres disponibles.
 - **Détails d'un genre**: Afficher les détails d'un genre spécifique lorsque son ID est fourni.
