@@ -26,11 +26,11 @@ public class Book {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id", referencedColumnName = "id")
-    private Type type;
+    private BookType bookType;
 
-    public Book(String title, Author author, Type type){
+    public Book(String title, Author author, BookType bookType){
         this.title = title;
         this.author = author;
-        this.type = type;
+        this.bookType = bookType;
     }
 }

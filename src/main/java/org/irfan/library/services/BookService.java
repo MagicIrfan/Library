@@ -3,7 +3,7 @@ package org.irfan.library.services;
 import jakarta.persistence.EntityNotFoundException;
 import org.irfan.library.Model.Author;
 import org.irfan.library.Model.Book;
-import org.irfan.library.Model.Type;
+import org.irfan.library.Model.BookType;
 import org.irfan.library.dao.*;
 import org.irfan.library.dto.*;
 import org.irfan.library.dto.request.CreateBookRequest;
@@ -70,7 +70,7 @@ public class BookService {
     @Transactional
     public BookDTO createBook(CreateBookRequest request) {
         Author author = authorService.getAuthorEntityById(request.getAuthor_id());
-        Type bookType = bookTypeService.getBookTypeEntityById(request.getBooktype_id());
+        BookType bookType = bookTypeService.getBookTypeEntityById(request.getBooktype_id());
         if (existsByTitle(request.getTitle())) {
             throw new DuplicateDataException("Ce livre existe déjà !");
         }
@@ -88,8 +88,8 @@ public class BookService {
         });
 
         Optional.ofNullable(request.getBooktype_id()).ifPresent(bookTypeId -> {
-            Type type = bookTypeService.getBookTypeEntityById(bookTypeId);
-            book.setType(type);
+            BookType bookType = bookTypeService.getBookTypeEntityById(bookTypeId);
+            book.setBookType(bookType);
         });
 
         Optional.ofNullable(request.getTitle())

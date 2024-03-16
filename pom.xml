@@ -17,7 +17,6 @@
         <java.version>17</java.version>
         <sonar.projectVersion>1.0</sonar.projectVersion>
         <sonar.projectKey>Library</sonar.projectKey>
-        <sonar.login>sqp_a7abc0677517c46aa7cf40360cf32c6c96f2d174</sonar.login>
         <sonar.host.url>http://localhost:9000</sonar.host.url>
     </properties>
     <dependencies>

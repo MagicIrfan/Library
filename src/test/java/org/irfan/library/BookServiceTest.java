@@ -3,7 +3,7 @@ package org.irfan.library;
 import jakarta.persistence.EntityNotFoundException;
 import org.irfan.library.Model.Author;
 import org.irfan.library.Model.Book;
-import org.irfan.library.Model.Type;
+import org.irfan.library.Model.BookType;
 import org.irfan.library.dao.AuthorRepository;
 import org.irfan.library.dao.BookRepository;
 import org.irfan.library.dao.BookTypeRepository;
@@ -57,10 +57,10 @@ public class BookServiceTest {
     @Test
     public void whenFindBooksByAuthor_thenReturnBookList() {
         // Given
-        Type type = new Type("Roman");
+        BookType bookType = new BookType("Roman");
         Author author = new Author(1,"Victor", "Hugo", new ArrayList<>());
-        Book book1 = new Book("Les Misérables", author,type);
-        Book book2 = new Book("Le Dernier Jour d'un Condamné", author,type);
+        Book book1 = new Book("Les Misérables", author, bookType);
+        Book book2 = new Book("Le Dernier Jour d'un Condamné", author, bookType);
         List<Book> bookList = Arrays.asList(book1, book2);
 
         when(bookRepository.findBooksCustom(Optional.empty(),Optional.empty(), Optional.ofNullable(author.getId()),Optional.empty())).thenReturn(bookList);
@@ -78,9 +78,9 @@ public class BookServiceTest {
     @Test
     public void whenFindBooksById_thenReturnBook() {
         // Given
-        Type type = new Type("Roman");
+        BookType bookType = new BookType("Roman");
         Author author = new Author(1,"Victor", "Hugo", new ArrayList<>());
-        Book book1 = new Book(1,"Les Misérables", author,type);
+        Book book1 = new Book(1,"Les Misérables", author, bookType);
 
         when(bookRepository.findById(book1.getId())).thenReturn(Optional.of(book1));
 
@@ -96,17 +96,17 @@ public class BookServiceTest {
     @Test
     public void whenCreateBook_thenBookIsCreated() {
         // Given
-        Type type = new Type(1,"Roman");
+        BookType bookType = new BookType(1,"Roman");
         Author author = new Author(1,"Victor", "Hugo", new ArrayList<>());
-        Book book1 = new Book(1,"Les Misérables", author,type);
+        Book book1 = new Book(1,"Les Misérables", author, bookType);
 
         when(authorRepository.findById(author.getId())).thenReturn(Optional.of(author));
-        when(bookTypeRepository.findById(type.getId())).thenReturn(Optional.of(type));
+        when(bookTypeRepository.findById(bookType.getId())).thenReturn(Optional.of(bookType));
         when(bookRepository.existsByTitle(book1.getTitle())).thenReturn(false);
         when(bookRepository.save(any(Book.class))).thenAnswer(a -> a.getArguments()[0]);
 
         //When
-        bookService.createBook(new CreateBookRequest(author.getId(),type.getId(),book1.getTitle()));
+        bookService.createBook(new CreateBookRequest(author.getId(), bookType.getId(),book1.getTitle()));
 
         // Then
         ArgumentCaptor<Book> bookArgumentCaptor = ArgumentCaptor.forClass(Book.class);
@@ -116,20 +116,20 @@ public class BookServiceTest {
         assertNotNull(savedBook);
         assertEquals(book1.getTitle(), savedBook.getTitle());
         assertEquals(author.getId(), savedBook.getAuthor().getId());
-        assertEquals(type.getId(), savedBook.getType().getId());
+        assertEquals(bookType.getId(), savedBook.getBookType().getId());
     }
 
     @Test
     public void whenEditBookType_thenBookTypeIsUpdated() {
         // Given
         EditBookRequest request = new EditBookRequest();
-        Type type = new Type(1,"Roman");
-        Type type2 = new Type(2,"Manga");
-        request.setBooktype_id(type2.getId());
+        BookType bookType = new BookType(1,"Roman");
+        BookType bookType2 = new BookType(2,"Manga");
+        request.setBooktype_id(bookType2.getId());
         Author author = new Author(1,"Victor", "Hugo", new ArrayList<>());
-        Book book1 = new Book(1,"Les Misérables", author,type);
+        Book book1 = new Book(1,"Les Misérables", author, bookType);
 
-        when(bookTypeRepository.findById(type2.getId())).thenReturn(Optional.of(type2));
+        when(bookTypeRepository.findById(bookType2.getId())).thenReturn(Optional.of(bookType2));
         when(bookRepository.findById(book1.getId())).thenReturn(Optional.of(book1));
         when(bookRepository.save(any(Book.class))).thenAnswer(i -> i.getArguments()[0]);
 
@@ -142,7 +142,7 @@ public class BookServiceTest {
         Book savedBook = bookArgumentCaptor.getValue();
 
         assertNotNull(savedBook);
-        assertEquals(type2, savedBook.getType());
+        assertEquals(bookType2, savedBook.getBookType());
         assertEquals(author, savedBook.getAuthor());
         assertEquals(book1.getTitle(), savedBook.getTitle());
     }
@@ -151,19 +151,19 @@ public class BookServiceTest {
     public void whenEditBook_thenBookIsUpdated() {
         // Given
         String newTitle = "One Piece";
-        Type type = new Type(1,"Roman");
-        Type type2 = new Type(2,"Manga");
+        BookType bookType = new BookType(1,"Roman");
+        BookType bookType2 = new BookType(2,"Manga");
         Author author = new Author(1,"Victor", "Hugo", new ArrayList<>());
         Author author2 = new Author(2,"Irfan", "BOUHENAF", new ArrayList<>());
-        Book book1 = new Book(1,"Les Misérables", author,type);
+        Book book1 = new Book(1,"Les Misérables", author, bookType);
         EditBookRequest request = EditBookRequest.builder()
                 .title(newTitle)
-                .booktype_id(type2.getId())
+                .booktype_id(bookType2.getId())
                 .author_id(author2.getId())
                 .build();
 
         when(authorRepository.findById(author2.getId())).thenReturn(Optional.of(author2));
-        when(bookTypeRepository.findById(type2.getId())).thenReturn(Optional.of(type2));
+        when(bookTypeRepository.findById(bookType2.getId())).thenReturn(Optional.of(bookType2));
         when(bookRepository.findById(book1.getId())).thenReturn(Optional.of(book1));
         when(bookRepository.save(any(Book.class))).thenAnswer(i -> i.getArguments()[0]);
 
@@ -177,7 +177,7 @@ public class BookServiceTest {
 
         assertNotNull(savedBook);
         assertEquals(newTitle, savedBook.getTitle());
-        assertEquals(type2, savedBook.getType());
+        assertEquals(bookType2, savedBook.getBookType());
         assertEquals(author2, savedBook.getAuthor());
     }
 

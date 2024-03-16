@@ -85,28 +85,28 @@ public class DataInitializer {
 
     private void createBookTypes(){
         if(bookTypeRepository.count() == 0){
-            List<Type> bookTypes = new ArrayList<>();
-            bookTypes.add(new Type("Roman"));
-            bookTypes.add(new Type("Nouvelle"));
-            bookTypes.add(new Type("Science-fiction"));
-            bookTypes.add(new Type("Fantasy"));
-            bookTypes.add(new Type("Policier"));
-            bookTypes.add(new Type("Horreur"));
-            bookTypes.add(new Type("Romance"));
-            bookTypes.add(new Type("Biographie"));
-            bookTypes.add(new Type("Autobiographie"));
-            bookTypes.add(new Type("Essai"));
-            bookTypes.add(new Type("Histoire"));
-            bookTypes.add(new Type("Science et Éducation"));
-            bookTypes.add(new Type("Développement personnel"));
-            bookTypes.add(new Type("Poésie"));
-            bookTypes.add(new Type("Théâtre"));
-            bookTypes.add(new Type("Bande dessinée"));
-            bookTypes.add(new Type("Roman graphique"));
-            bookTypes.add(new Type("Littérature jeunesse"));
-            bookTypes.add(new Type("Guide et manuel"));
-            bookTypes.add(new Type("Manga"));
-            bookTypeRepository.saveAll(bookTypes);
+            List<BookType> bookBookTypes = new ArrayList<>();
+            bookBookTypes.add(new BookType("Roman"));
+            bookBookTypes.add(new BookType("Nouvelle"));
+            bookBookTypes.add(new BookType("Science-fiction"));
+            bookBookTypes.add(new BookType("Fantasy"));
+            bookBookTypes.add(new BookType("Policier"));
+            bookBookTypes.add(new BookType("Horreur"));
+            bookBookTypes.add(new BookType("Romance"));
+            bookBookTypes.add(new BookType("Biographie"));
+            bookBookTypes.add(new BookType("Autobiographie"));
+            bookBookTypes.add(new BookType("Essai"));
+            bookBookTypes.add(new BookType("Histoire"));
+            bookBookTypes.add(new BookType("Science et Éducation"));
+            bookBookTypes.add(new BookType("Développement personnel"));
+            bookBookTypes.add(new BookType("Poésie"));
+            bookBookTypes.add(new BookType("Théâtre"));
+            bookBookTypes.add(new BookType("Bande dessinée"));
+            bookBookTypes.add(new BookType("Roman graphique"));
+            bookBookTypes.add(new BookType("Littérature jeunesse"));
+            bookBookTypes.add(new BookType("Guide et manuel"));
+            bookBookTypes.add(new BookType("Manga"));
+            bookTypeRepository.saveAll(bookBookTypes);
         }
     }
 
@@ -114,7 +114,7 @@ public class DataInitializer {
         if(bookRepository.count() == 0){
             // Exemple de récupération d'un auteur et d'un type de livre
             Optional<Author> camus = authorRepository.findByFirstnameAndLastname("Albert","Camus");
-            Optional<Type> roman = bookTypeRepository.findByName("Roman");
+            Optional<BookType> roman = bookTypeRepository.findByName("Roman");
 
             List<Book> books = new ArrayList<>();
 

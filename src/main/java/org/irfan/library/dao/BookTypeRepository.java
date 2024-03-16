@@ -1,13 +1,11 @@
 package org.irfan.library.dao;
 
-import org.irfan.library.Model.Type;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.irfan.library.Model.BookType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface BookTypeRepository extends JpaRepository<Type, Integer> {
-    Optional<Type> findByName(String name);
+public interface BookTypeRepository extends JpaRepository<BookType, Integer> {
+    Optional<BookType> findByName(String name);
     boolean existsByName(String name);
 }
