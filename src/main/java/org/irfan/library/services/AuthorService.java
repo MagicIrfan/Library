@@ -59,15 +59,19 @@ public class AuthorService {
 
     @Transactional
     public AuthorDTO editAuthor(Integer id, EditAuthorRequest request){
-        Author author = authorRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("L'auteur n'existe pas avec l'id " + id));
+        return modelMapper.map(editAuthorEntity(id,request),AuthorDTO.class);
+    }
+
+    @Transactional
+    public Author editAuthorEntity(Integer id, EditAuthorRequest request){
+        Author author = getAuthorEntityById(id);
         Optional.ofNullable(request.getFirstname())
                 .filter(StringUtils::hasText)
                 .ifPresent(author::setFirstname);
         Optional.ofNullable(request.getLastname())
                 .filter(StringUtils::hasText)
                 .ifPresent(author::setLastname);
-        return modelMapper.map(authorRepository.save(author),AuthorDTO.class);
+        return authorRepository.save(author);
     }
 
     @Transactional
