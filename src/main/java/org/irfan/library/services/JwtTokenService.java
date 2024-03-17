@@ -1,12 +1,16 @@
 package org.irfan.library.services;
 
 import io.jsonwebtoken.*;
+import jakarta.servlet.http.HttpServletRequest;
+import org.irfan.library.dao.TokenBlacklistRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class JwtTokenService {
@@ -15,6 +19,11 @@ public class JwtTokenService {
     private String jwtSecret;
     @Value("${app.jwtExpirationMs}")
     private int jwtExpirationMs;
+    private TokenBlacklistRepository tokenBlacklistRepository;
+    @Autowired
+    public JwtTokenService(TokenBlacklistRepository tokenBlacklistRepository){
+        this.tokenBlacklistRepository = tokenBlacklistRepository;
+    }
 
     public String createToken(String username) {
         return Jwts.builder()
@@ -39,9 +48,17 @@ public class JwtTokenService {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(jwtSecret)
                     .parseClaimsJws(token);
-            return claims.getBody().getExpiration().after(new Date());
+            return claims.getBody().getExpiration().after(new Date()) && !tokenBlacklistRepository.existsByToken(token);
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public Optional<String> getJwtFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return Optional.of(bearerToken.substring(7));
+        }
+        return Optional.empty();
     }
 }
