@@ -41,6 +41,30 @@ Développer une API RESTful pour gérer une collection de livres, permettant les
 
 ## API Endpoints
 
+| Route                      | Méthode | Tags                | OperationID           | Description                      |
+|----------------------------|---------|---------------------|-----------------------|----------------------------------|
+| `/api/v1/signup`           | POST    | auth-controller     | signup                | Inscription d'un nouvel utilisateur |
+| `/api/v1/refreshToken`     | POST    | auth-controller     | refreshToken          | Rafraîchissement du jeton d'accès |
+| `/api/v1/logout`           | POST    | auth-controller     | logout                | Déconnexion de l'utilisateur     |
+| `/api/v1/login`            | POST    | auth-controller     | login                 | Connexion de l'utilisateur       |
+| `/api/v1/booktypes`        | GET     | book-type-controller| getBookTypes          | Liste de tous les types de livres |
+| `/api/v1/booktypes`        | POST    | book-type-controller| createBookType        | Ajout d'un nouveau type de livre  |
+| `/api/v1/booktypes/{id}`   | GET     | book-type-controller| getBookTypeById       | Détails d'un type de livre par ID |
+| `/api/v1/booktypes/{id}`   | PATCH   | book-type-controller| editBookType          | Mise à jour d'un type de livre par ID |
+| `/api/v1/books`            | GET     | book-controller     | getBooks              | Liste de tous les livres         |
+| `/api/v1/books`            | POST    | book-controller     | createBook            | Ajout d'un nouveau livre         |
+| `/api/v1/books/{id}`       | DELETE  | book-controller     | deleteBook            | Suppression d'un livre par ID    |
+| `/api/v1/books/{id}`       | PATCH   | book-controller     | editBook              | Mise à jour d'un livre par ID    |
+| `/api/v1/authors`          | GET     | author-controller   | getAuthors            | Liste de tous les auteurs        |
+| `/api/v1/authors`          | POST    | author-controller   | createAuthor          | Ajout d'un nouvel auteur         |
+| `/api/v1/authors/{id}`     | GET     | author-controller   | getAuthorById         | Détails d'un auteur par ID       |
+| `/api/v1/authors/{id}`     | DELETE  | author-controller   | deleteAuthor          | Suppression d'un auteur par ID   |
+| `/api/v1/authors/{id}`     | PATCH   | author-controller   | editAuthor            | Mise à jour d'un auteur par ID   |
+| `/api/v1/users/{id}`       | GET     | user-controller     | getUser_1             | Détails d'un utilisateur par ID  |
+| `/api/v1/users/{id}`       | DELETE  | user-controller     | deleteUser            | Suppression d'un utilisateur par ID |
+| `/api/v1/users/{id}`       | PATCH   | user-controller     | editUser              | Mise à jour d'un utilisateur par ID |
+| `/api/v1/users`            | GET     | user-controller     | getUser               | Liste filtrée des utilisateurs   |
+| `/api/v1/users/all`        | GET     | user-controller     | getAllUsers           | Liste de tous les utilisateurs   |
 
 ## Technologies et Outils
 
