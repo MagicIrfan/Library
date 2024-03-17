@@ -73,3 +73,15 @@ Développer une API RESTful pour gérer une collection de livres, permettant les
 - **SQLite**: Comme base de données en mémoire pour le développement et les tests.
 - **Maven**: Pour la gestion des dépendances et la construction du projet.
 - **Lombok**: Pour réduire le boilerplate code.
+
+## Cloner le dépôt
+
+```git clone https://github.com/MagicIrfan/Library```
+
+## Démarrer l'application
+
+```mvn spring-boot:run```
+
+## Démarrer les tests
+
+```mvn test```
