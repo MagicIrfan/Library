@@ -1,4 +1,10 @@
-﻿# API de Gestion de Livres avec Spring Boot
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=MagicIrfan_Library)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=MagicIrfan_Morpion&metric=vulnerabilities)](https://sonarcloud.io/project/overview?id=MagicIrfan_Library)
+[![Duplications](https://sonarcloud.io/api/project_badges/measure?project=MagicIrfan_Morpion&metric=duplicated_lines_density)](https://sonarcloud.io/project/overview?id=MagicIrfan_Library)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=MagicIrfan_Morpion&metric=sqale_rating)](https://sonarcloud.io/project/overview?id=MagicIrfan_Library)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=MagicIrfan_Morpion&metric=bugs)](https://sonarcloud.io/project/overview?id=MagicIrfan_Library)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=MagicIrfan_Morpion&metric=code_smells)](https://sonarcloud.io/project/overview?id=MagicIrfan_Library)
+ # API de Gestion de Livres avec Spring Boot
 
 ## Objectif
 
@@ -25,6 +31,13 @@ Développer une API RESTful pour gérer une collection de livres, permettant les
 - **Détails d'un genre**: Afficher les détails d'un genre spécifique lorsque son ID est fourni.
 - **Mise à jour d'un genre**: Permettre la mise à jour des informations d'un genre existant.
 - **Suppression d'un genre**: Permettre la suppression d'un genre de la collection.
+
+### Utilisateurs
+- **Création d'un utilisateur**: Permettre aux administrateurs d'ajouter de nouveaux utilisateurs.
+- **Liste des utilisateur**: Fournir une liste de tous les utilisateurs disponibles.
+- **Détails d'un utilisateur**: Afficher les détails d'un utilisateur spécifique lorsque son ID est fourni.
+- **Mise à jour d'un utilisateur**: Permettre la mise à jour des informations d'un utilisateur existant.
+- **Suppression d'un utilisateur**: Permettre la suppression d'un utilisateur de la collection.
 
 ## API Endpoints
 
