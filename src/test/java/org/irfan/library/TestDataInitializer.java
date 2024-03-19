@@ -47,7 +47,6 @@ public class TestDataInitializer {
     @Value("${app.admin.password}")
     private String adminPassword;
 
-    @PostConstruct
     @Transactional
     public void init() {
         createRoles();
@@ -55,6 +54,15 @@ public class TestDataInitializer {
         createAuthors();
         createBookTypes();
         createBooks();
+    }
+
+    @Transactional
+    public void clear(){
+        userRepository.deleteAll();
+        roleRepository.deleteAll();
+        bookRepository.deleteAll();
+        bookTypeRepository.deleteAll();
+        authorRepository.deleteAll();
     }
 
     private void createAdminUser(){
@@ -83,7 +91,6 @@ public class TestDataInitializer {
             authors.add(new Author("Albert", "Camus"));
             authors.add(new Author("Guillaume", "Apollinaire"));
             authors.add(new Author("Victor", "Hugo"));
-            authors.add(new Author("Eiichiro", "Oda"));
             authorRepository.saveAll(authors);
         }
     }
