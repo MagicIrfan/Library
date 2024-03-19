@@ -7,17 +7,20 @@ import org.irfan.library.dao.*;
 import org.irfan.library.enums.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
-@Profile("!test")
-public class DataInitializer {
+@TestConfiguration
+@Profile("test")
+public class TestDataInitializer {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -27,12 +30,12 @@ public class DataInitializer {
     private final BookRepository bookRepository;
 
     @Autowired
-    public DataInitializer(UserRepository userRepository,
-                           RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder,
-                           AuthorRepository authorRepository,
-                           BookTypeRepository bookTypeRepository,
-                           BookRepository bookRepository){
+    public TestDataInitializer(UserRepository userRepository,
+                               RoleRepository roleRepository,
+                               PasswordEncoder passwordEncoder,
+                               AuthorRepository authorRepository,
+                               BookTypeRepository bookTypeRepository,
+                               BookRepository bookRepository){
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
