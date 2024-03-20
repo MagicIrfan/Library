@@ -1,9 +1,9 @@
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=MagicIrfan_Library)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=MagicIrfan_Morpion&metric=vulnerabilities)](https://sonarcloud.io/project/overview?id=MagicIrfan_Library)
-[![Duplications](https://sonarcloud.io/api/project_badges/measure?project=MagicIrfan_Morpion&metric=duplicated_lines_density)](https://sonarcloud.io/project/overview?id=MagicIrfan_Library)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=MagicIrfan_Morpion&metric=sqale_rating)](https://sonarcloud.io/project/overview?id=MagicIrfan_Library)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=MagicIrfan_Morpion&metric=bugs)](https://sonarcloud.io/project/overview?id=MagicIrfan_Library)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=MagicIrfan_Morpion&metric=code_smells)](https://sonarcloud.io/project/overview?id=MagicIrfan_Library)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=MagicIrfan_Library&metric=vulnerabilities)](https://sonarcloud.io/project/overview?id=MagicIrfan_Library)
+[![Duplications](https://sonarcloud.io/api/project_badges/measure?project=MagicIrfan_Library&metric=duplicated_lines_density)](https://sonarcloud.io/project/overview?id=MagicIrfan_Library)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=MagicIrfan_Library&metric=sqale_rating)](https://sonarcloud.io/project/overview?id=MagicIrfan_Library)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=MagicIrfan_Library&metric=bugs)](https://sonarcloud.io/project/overview?id=MagicIrfan_Library)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=MagicIrfan_Library&metric=code_smells)](https://sonarcloud.io/project/overview?id=MagicIrfan_Library)
  # API de Gestion de Livres avec Spring Boot
 
 ## Objectif
