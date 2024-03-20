@@ -22,21 +22,21 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class BookTypeServiceTest {
+class BookTypeServiceTest {
     @Mock
     private BookTypeRepository bookTypeRepository;
     private ModelMapper modelMapper;
     private BookTypeService bookTypeService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         // Initialisation des services
         modelMapper = new ModelMapper();
         bookTypeService = new BookTypeService(bookTypeRepository,modelMapper);
     }
 
     @Test
-    public void whenCreateBookType_thenBookTypeIsCreated()
+    void whenCreateBookType_thenBookTypeIsCreated()
     {
         //Given
         String name = "Roman";
@@ -56,7 +56,7 @@ public class BookTypeServiceTest {
     }
 
     @Test
-    public void whenEditBookType_thenBookTypeIsUpdated()
+    void whenEditBookType_thenBookTypeIsUpdated()
     {
         //Given
         String oldName = "Roman";
@@ -78,7 +78,7 @@ public class BookTypeServiceTest {
     }
 
     @Test
-    public void whenDeleteAuthor_thenAuthorIsDeleted(){
+    void whenDeleteAuthor_thenAuthorIsDeleted(){
         // Given
         Integer bookTypeId = 1; // Use the ID directly for clarity
         when(bookTypeRepository.existsById(bookTypeId)).thenReturn(true);
@@ -91,7 +91,7 @@ public class BookTypeServiceTest {
     }
 
     @Test
-    public void whenEditBookAndBookNotFound_thenThrowsException() {
+    void whenEditBookAndBookNotFound_thenThrowsException() {
         // Given
         int nonExistentId = 999;
 
@@ -104,7 +104,7 @@ public class BookTypeServiceTest {
     }
 
     @Test
-    public void whenDeleteBookAndBookNotFound_thenThrowsException(){
+    void whenDeleteBookAndBookNotFound_thenThrowsException(){
         // Given
         int nonExistentId = 999;
 

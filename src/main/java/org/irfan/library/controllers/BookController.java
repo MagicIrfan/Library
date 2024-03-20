@@ -41,14 +41,14 @@ public class BookController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<OKMessageResponse<String>> editBook(@PathVariable(name = "id") Integer book_id, @Valid @RequestBody EditBookRequest request){
-        bookService.editBook(book_id,request);
+    public ResponseEntity<OKMessageResponse<String>> editBook(@PathVariable(name = "id") Integer bookId, @Valid @RequestBody EditBookRequest request){
+        bookService.editBook(bookId,request);
         return ResponseEntity.ok(new OKMessageResponse<>("Livre modifié avec succès."));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<OKMessageResponse<String>> deleteBook(@PathVariable(name = "id") Integer book_id){
-        bookService.deleteBook(book_id);
+    public ResponseEntity<OKMessageResponse<String>> deleteBook(@PathVariable(name = "id") Integer bookId){
+        bookService.deleteBook(bookId);
         return ResponseEntity.ok(new OKMessageResponse<>("Livre supprimé avec succès."));
     }
 }

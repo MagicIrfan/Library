@@ -46,7 +46,7 @@ public class BookServiceTest {
     private BookTypeService bookTypeService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         // Initialisation des services
         modelMapper = new ModelMapper();
         authorService = new AuthorService(authorRepository,modelMapper);
@@ -55,7 +55,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void whenFindBooksByAuthor_thenReturnBookList() {
+    void whenFindBooksByAuthor_thenReturnBookList() {
         // Given
         BookType bookType = new BookType("Roman");
         Author author = new Author(1,"Victor", "Hugo", new ArrayList<>());
@@ -76,7 +76,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void whenFindBooksById_thenReturnBook() {
+    void whenFindBooksById_thenReturnBook() {
         // Given
         BookType bookType = new BookType("Roman");
         Author author = new Author(1,"Victor", "Hugo", new ArrayList<>());
@@ -94,7 +94,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void whenCreateBook_thenBookIsCreated() {
+    void whenCreateBook_thenBookIsCreated() {
         // Given
         BookType bookType = new BookType(1,"Roman");
         Author author = new Author(1,"Victor", "Hugo", new ArrayList<>());
@@ -120,12 +120,12 @@ public class BookServiceTest {
     }
 
     @Test
-    public void whenEditBookType_thenBookTypeIsUpdated() {
+    void whenEditBookType_thenBookTypeIsUpdated() {
         // Given
         EditBookRequest request = new EditBookRequest();
         BookType bookType = new BookType(1,"Roman");
         BookType bookType2 = new BookType(2,"Manga");
-        request.setBooktype_id(bookType2.getId());
+        request.setBooktypeId(bookType2.getId());
         Author author = new Author(1,"Victor", "Hugo", new ArrayList<>());
         Book book1 = new Book(1,"Les Misérables", author, bookType);
 
@@ -148,7 +148,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void whenEditBook_thenBookIsUpdated() {
+    void whenEditBook_thenBookIsUpdated() {
         // Given
         String newTitle = "One Piece";
         BookType bookType = new BookType(1,"Roman");
@@ -158,8 +158,8 @@ public class BookServiceTest {
         Book book1 = new Book(1,"Les Misérables", author, bookType);
         EditBookRequest request = EditBookRequest.builder()
                 .title(newTitle)
-                .booktype_id(bookType2.getId())
-                .author_id(author2.getId())
+                .booktypeId(bookType2.getId())
+                .authorId(author2.getId())
                 .build();
 
         when(authorRepository.findById(author2.getId())).thenReturn(Optional.of(author2));
@@ -182,7 +182,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void whenDeleteBook_thenBookIsDeleted(){
+    void whenDeleteBook_thenBookIsDeleted(){
         // Given
         Integer bookId = 1; // Use the ID directly for clarity
         when(bookRepository.existsById(bookId)).thenReturn(true);
@@ -195,7 +195,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void whenEditBookAndBookNotFound_thenThrowsException() {
+    void whenEditBookAndBookNotFound_thenThrowsException() {
         // Given
         int nonExistentBookId = 999;
         EditBookRequest request = new EditBookRequest(); // configurez votre requête selon les besoins
@@ -209,7 +209,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void whenDeleteBookAndBookNotFound_thenThrowsException(){
+    void whenDeleteBookAndBookNotFound_thenThrowsException(){
         // Given
         int nonExistentBookId = 999;
 

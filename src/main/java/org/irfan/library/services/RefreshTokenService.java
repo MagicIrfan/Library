@@ -1,5 +1,6 @@
 package org.irfan.library.services;
 
+import org.irfan.library.exception.TokenRefreshExpiredException;
 import org.irfan.library.model.RefreshToken;
 import org.irfan.library.model.User;
 import org.irfan.library.dao.RefreshTokenRepository;
@@ -42,7 +43,7 @@ public class RefreshTokenService {
     public RefreshToken verifyExpiration(RefreshToken token){
         if(token.getExpiryDate().compareTo(Instant.now())<0){
             refreshTokenRepository.delete(token);
-            throw new RuntimeException(token.getToken() + " Refresh token is expired. Please make a new login..!");
+            throw new TokenRefreshExpiredException(token.getToken());
         }
         return token;
     }

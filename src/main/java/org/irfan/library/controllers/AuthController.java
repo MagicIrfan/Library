@@ -30,19 +30,13 @@ public class AuthController {
         this.jwtTokenService = jwtTokenService;
     }
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request){
-        try {
-            String jwt = authService.login(request.getUsername(), request.getPassword());
-            RefreshToken refreshToken = refreshTokenService.createRefreshToken(request.getUsername());
-            return ResponseEntity.ok().body(JwtResponseDTO.builder()
-                    .accessToken(jwtTokenService.createToken(request.getUsername()))
-                    .token(refreshToken.getToken())
-                    .build());
-        } catch (AuthenticationException e) {
-            return ResponseEntity.badRequest().body("Échec de l'authentification : " + e.getMessage());
-        }   catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Une erreur est survenue : " + e.getMessage());
-        }
+    public ResponseEntity<JwtResponseDTO> login(@Valid @RequestBody LoginRequest request){
+        String jwt = authService.login(request.getUsername(), request.getPassword());
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(request.getUsername());
+        return ResponseEntity.ok().body(JwtResponseDTO.builder()
+                .accessToken(jwt)
+                .token(refreshToken.getToken())
+                .build());
     }
 
     @PostMapping("/logout")
@@ -52,7 +46,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<OKMessageResponse> signup(@Valid @RequestBody SignupRequest request) {
+    public ResponseEntity<OKMessageResponse<String>> signup(@Valid @RequestBody SignupRequest request) {
         authService.signUp(request.getUsername(), request.getEmail(), request.getPassword());
         return ResponseEntity.ok().body(new OKMessageResponse<>("L'utilisateur est inscrit"));
     }

@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @Import({SecurityTestConfig.class, TestDataInitializer.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class AuthorControllerTest {
+class AuthorControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -36,7 +36,7 @@ public class AuthorControllerTest {
     private String tokenUserInvalid;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         testDataInitializer.init();
         this.tokenAdmin = this.jwtTokenService.createToken("Irfan");
         this.tokenUser = this.jwtTokenService.createToken("Irfane");
@@ -45,36 +45,36 @@ public class AuthorControllerTest {
     }
 
     @AfterEach
-    public void clear() {
+    void clear() {
         testDataInitializer.clear();
     }
 
     @Test
-    public void testGetAuthorsAsAdminAndUser() throws Exception {
+    void testGetAuthorsAsAdminAndUser() throws Exception {
         performGetRequestWithTokenOk(API_AUTHORS_BASE_URL, tokenAdmin);
         performGetRequestWithTokenOk(API_AUTHORS_BASE_URL, tokenUser);
     }
 
     @Test
-    public void testGetAuthorsAsAdminAndUserTokenInvalid() throws Exception {
+    void testGetAuthorsAsAdminAndUserTokenInvalid() throws Exception {
         performGetRequestWithToken(API_AUTHORS_BASE_URL, tokenAdminInvalid,status().isUnauthorized());
         performGetRequestWithToken(API_AUTHORS_BASE_URL, tokenUserInvalid,status().isUnauthorized());
     }
 
     @Test
-    public void testGetOneAuthorAsAdminAndUser() throws Exception {
+    void testGetOneAuthorAsAdminAndUser() throws Exception {
         performGetRequestWithTokenOk(API_AUTHORS_BASE_URL + "/1", tokenAdmin);
         performGetRequestWithTokenOk(API_AUTHORS_BASE_URL + "/1", tokenUser);
     }
 
     @Test
-    public void testGetOneAuthorAsAdminAndUserTokenInvalid() throws Exception {
+    void testGetOneAuthorAsAdminAndUserTokenInvalid() throws Exception {
         performGetRequestWithToken(API_AUTHORS_BASE_URL + "/1", tokenAdminInvalid,status().isUnauthorized());
         performGetRequestWithToken(API_AUTHORS_BASE_URL + "/1", tokenUserInvalid,status().isUnauthorized());
     }
 
     @Test
-    public void testPatchOneAuthorAsAdmin() throws Exception {
+    void testPatchOneAuthorAsAdmin() throws Exception {
         String patchContent = "{\"firstname\": \"Irfan\"}";
         performPatchRequestWithToken(API_AUTHORS_BASE_URL + "/1", tokenAdmin, patchContent, status().isOk());
         performGetRequestWithToken(API_AUTHORS_BASE_URL + "/1", tokenAdmin, jsonPath("firstname").value("Irfan"));
@@ -84,34 +84,26 @@ public class AuthorControllerTest {
     }
 
     @Test
-    public void testDeleteOneAuthorAsAdmin() throws Exception {
+    void testDeleteOneAuthorAsAdmin() throws Exception {
         performDeleteRequestWithToken(API_AUTHORS_BASE_URL + "/1", tokenAdmin, status().isOk());
         performDeleteRequestWithToken(API_AUTHORS_BASE_URL + "/1", tokenUser, status().isForbidden());
     }
 
     // Auxiliary methods to reduce repetition
-    private void performGetRequestWithToken(String url, String token, ResultMatcher expectedStatus) throws Exception {
+    void performGetRequestWithToken(String url, String token, ResultMatcher expectedStatus) throws Exception {
         mockMvc.perform(get(url)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(expectedStatus);
     }
 
-    private void performGetRequestWithTokenOk(String url, String token) throws Exception {
+    void performGetRequestWithTokenOk(String url, String token) throws Exception {
         mockMvc.perform(get(url)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8));
     }
 
-    private void performGetRequestWithToken(String url, String token, ResultMatcher expectedStatus, ResultMatcher value) throws Exception {
-        mockMvc.perform(get(url)
-                        .header("Authorization", "Bearer " + token))
-                .andExpect(expectedStatus)
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(value);
-    }
-
-    private void performPatchRequestWithToken(String url, String token, String content, ResultMatcher expectedStatus) throws Exception {
+    void performPatchRequestWithToken(String url, String token, String content, ResultMatcher expectedStatus) throws Exception {
         mockMvc.perform(patch(url)
                         .header("Authorization", "Bearer " + token)
                         .contentType(APPLICATION_JSON_UTF8)
@@ -119,7 +111,7 @@ public class AuthorControllerTest {
                 .andExpect(expectedStatus);
     }
 
-    private void performDeleteRequestWithToken(String url, String token, ResultMatcher expectedStatus) throws Exception {
+    void performDeleteRequestWithToken(String url, String token, ResultMatcher expectedStatus) throws Exception {
         mockMvc.perform(delete(url)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(expectedStatus);

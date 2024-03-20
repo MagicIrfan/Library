@@ -9,8 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 public class EditBookRequest {
     @Id
-    private Integer author_id;
+    private Integer authorId;
     @Id
-    private Integer booktype_id;
+    private Integer booktypeId;
     private String title;
 }

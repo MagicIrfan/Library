@@ -12,10 +12,10 @@ import lombok.*;
 public class CreateBookRequest {
     @NotNull
     @Id
-    private Integer author_id;
+    private Integer authorId;
     @NotNull
     @Id
-    private Integer booktype_id;
+    private Integer booktypeId;
     @NotEmpty
     private String title;
 }

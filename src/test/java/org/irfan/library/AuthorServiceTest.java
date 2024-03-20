@@ -23,21 +23,21 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthorServiceTest {
+class AuthorServiceTest {
     @Mock
     private AuthorRepository authorRepository;
     private ModelMapper modelMapper;
     private AuthorService authorService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         // Initialisation des services
         modelMapper = new ModelMapper();
         authorService = new AuthorService(authorRepository,modelMapper);
     }
 
     @Test
-    public void whenFindAllAuthors_thenReturnList()
+    void whenFindAllAuthors_thenReturnList()
     {
         //Given
         List<Author> authors = new ArrayList<>();
@@ -58,7 +58,7 @@ public class AuthorServiceTest {
     }
 
     @Test
-    public void whenFindAuthorById_thenReturnAuthor() {
+    void whenFindAuthorById_thenReturnAuthor() {
         // Given
         Author author = Author.builder()
                 .id(16)
@@ -88,7 +88,7 @@ public class AuthorServiceTest {
     }
 
     @Test
-    public void whenCreateAuthor_thenAuthorIsCreated() {
+    void whenCreateAuthor_thenAuthorIsCreated() {
         // Given
         Author author = new Author(1,"Victor", "Hugo", new ArrayList<>());
 
@@ -110,7 +110,7 @@ public class AuthorServiceTest {
     }
 
     @Test
-    public void whenEditAuthor_thenAuthorIsUpdated() {
+    void whenEditAuthor_thenAuthorIsUpdated() {
         String newFirstName = "Eiichiro";
         String newLastName = "Oda";
         Author author = new Author(1,"Victor", "Hugo", new ArrayList<>());
@@ -132,7 +132,7 @@ public class AuthorServiceTest {
     }
 
     @Test
-    public void whenEditAuthorWithBlanks_thenAuthorIsUpdated() {
+    void whenEditAuthorWithBlanks_thenAuthorIsUpdated() {
         String newFirstName = null;
         String newLastName = null;
         String oldFirstName = "Victor";
@@ -156,7 +156,7 @@ public class AuthorServiceTest {
     }
 
     @Test
-    public void whenDeleteAuthor_thenAuthorIsDeleted(){
+    void whenDeleteAuthor_thenAuthorIsDeleted(){
         // Given
         Integer authorId = 1; // Use the ID directly for clarity
         when(authorRepository.existsById(authorId)).thenReturn(true);
@@ -169,7 +169,7 @@ public class AuthorServiceTest {
     }
 
     @Test
-    public void whenEditBookAndBookNotFound_thenThrowsException() {
+    void whenEditBookAndBookNotFound_thenThrowsException() {
         // Given
         int nonExistentId = 999;
 
@@ -182,7 +182,7 @@ public class AuthorServiceTest {
     }
 
     @Test
-    public void whenDeleteBookAndBookNotFound_thenThrowsException(){
+    void whenDeleteBookAndBookNotFound_thenThrowsException(){
         // Given
         int nonExistentId = 999;
 

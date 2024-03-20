@@ -21,11 +21,11 @@ import java.util.Optional;
 
 @Component
 public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
-
-    private static final Logger logger = LoggerFactory.getLogger(JwtTokenAuthenticationFilter.class);
+    private static final Logger jwtLogger = LoggerFactory.getLogger(JwtTokenAuthenticationFilter.class);
 
     @Autowired
     private JwtTokenService jwtTokenService;
+
     @Autowired
     private MyUserDetailsService userDetailsService;
 
@@ -45,13 +45,13 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 } else {
-                    logger.warn("Refresh Token");
+                    jwtLogger.warn("Refresh Token");
                 }
             } else {
-                logger.warn("No JWT token found in request headers");
+                jwtLogger.warn("No JWT token found in request headers");
             }
         } catch (Exception e) {
-            logger.error("Cannot set user authentication: {}", e.getMessage());
+            jwtLogger.error("Cannot set user authentication: {}", e.getMessage());
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Erreur d'authentification.");
             shouldContinueFilterChain = false;
         }

@@ -69,8 +69,8 @@ public class BookService {
 
     @Transactional
     public BookDTO createBook(CreateBookRequest request) {
-        Author author = authorService.getAuthorEntityById(request.getAuthor_id());
-        BookType bookType = bookTypeService.getBookTypeEntityById(request.getBooktype_id());
+        Author author = authorService.getAuthorEntityById(request.getAuthorId());
+        BookType bookType = bookTypeService.getBookTypeEntityById(request.getBooktypeId());
         if (existsByTitle(request.getTitle())) {
             throw new DuplicateDataException("Ce livre existe déjà !");
         }
@@ -79,15 +79,15 @@ public class BookService {
     }
 
     @Transactional
-    public BookDTO editBook(Integer book_id, EditBookRequest request){
-        Book book = getBookEntityById(book_id);
+    public BookDTO editBook(Integer bookId, EditBookRequest request){
+        Book book = getBookEntityById(bookId);
 
-        Optional.ofNullable(request.getAuthor_id()).ifPresent(authorId -> {
+        Optional.ofNullable(request.getAuthorId()).ifPresent(authorId -> {
             Author author = authorService.getAuthorEntityById(authorId);
             book.setAuthor(author);
         });
 
-        Optional.ofNullable(request.getBooktype_id()).ifPresent(bookTypeId -> {
+        Optional.ofNullable(request.getBooktypeId()).ifPresent(bookTypeId -> {
             BookType bookType = bookTypeService.getBookTypeEntityById(bookTypeId);
             book.setBookType(bookType);
         });

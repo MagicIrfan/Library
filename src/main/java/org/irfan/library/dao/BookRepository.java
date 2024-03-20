@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book,Integer>, JpaSpecificationExecutor<Book> {
     boolean existsByTitle(String title);
-    List<Book> findAllByAuthor_Id(Integer author_id);
+    List<Book> findAllByAuthor_Id(Integer authorId);
     Optional<Book> findByTitle(String title);
     default List<Book> findBooksCustom(Optional<Integer> id, Optional<String> title, Optional<Integer> authorId, Optional<Integer> bookTypeId){
         Specification<Book> spec = (root, query, cb) -> {

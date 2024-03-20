@@ -52,20 +52,14 @@ public class AuthService {
         userService.addUser(user);
     }
 
-    public String login(String username, String password) throws Exception {
+    public String login(String username, String password){
         authenticate(username, password);
         return tokenProvider.createToken(username);
     }
 
-    private void authenticate(String username, String password) throws Exception {
-        try {
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
-        }
+    private void authenticate(String username, String password){
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     private boolean userExists(String username, String email){
