@@ -54,6 +54,7 @@ public class TestDataInitializer {
         createAuthors();
         createBookTypes();
         createBooks();
+        createOneUser();
     }
 
     @Transactional
@@ -71,6 +72,17 @@ public class TestDataInitializer {
             Optional<Role> role = roleRepository.findByName(RoleEnum.ADMIN.name());
             if(role.isPresent()){
                 User user = new User(role.get(),"Irfan",adminEmail,passwordEncoder.encode(adminPassword));
+                userRepository.save(user);
+            }
+        }
+    }
+
+    private void createOneUser(){
+        String email = "irfan@irfan.com";
+        if(userRepository.findByEmail(email).isEmpty()) {
+            Optional<Role> role = roleRepository.findByName(RoleEnum.USER.name());
+            if(role.isPresent()){
+                User user = new User(role.get(),"Irfane",email,passwordEncoder.encode("testtest"));
                 userRepository.save(user);
             }
         }

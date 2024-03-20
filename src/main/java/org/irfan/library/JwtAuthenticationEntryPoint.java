@@ -8,7 +8,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 
 import java.io.IOException;
 
-@Profile("!test")
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override

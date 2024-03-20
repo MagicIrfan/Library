@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +18,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateDataException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ResponseEntity<Object> handleDataAlreadyExists(DuplicateDataException ex) {
+    public ResponseEntity<String> handleDataAlreadyExists(DuplicateDataException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 
@@ -32,7 +34,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<Object> handleDataAlreadyExists(EntityNotFoundException ex) {
+    public ResponseEntity<String> handleDataAlreadyExists(EntityNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
