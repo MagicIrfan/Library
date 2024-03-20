@@ -176,9 +176,7 @@ class AuthorServiceTest {
         when(authorRepository.findById(nonExistentId)).thenReturn(Optional.empty());
 
         // When & Then
-        assertThrows(EntityNotFoundException.class, () -> {
-            authorService.editAuthorEntity(nonExistentId, new EditAuthorRequest());
-        });
+        assertThrows(EntityNotFoundException.class, () -> authorService.editAuthorEntity(nonExistentId, new EditAuthorRequest()));
     }
 
     @Test
@@ -189,8 +187,8 @@ class AuthorServiceTest {
         when(authorRepository.existsById(nonExistentId)).thenReturn(false);
 
         // When & Then
-        assertThrows(EntityNotFoundException.class, () -> {
-            authorService.deleteAuthor(nonExistentId);
-        });
+        assertThrows(EntityNotFoundException.class, () ->
+            authorService.deleteAuthor(nonExistentId)
+        );
     }
 }

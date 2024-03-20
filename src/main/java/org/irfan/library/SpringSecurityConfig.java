@@ -25,6 +25,8 @@ import org.springframework.stereotype.Component;
 @Profile("!test")
 public class SpringSecurityConfig{
 
+    private final String LINK_API = "/api/v1/**";
+
     @Bean
     public JwtTokenAuthenticationFilter jwtAuthenticationFilter(){
         return new JwtTokenAuthenticationFilter();
@@ -42,9 +44,9 @@ public class SpringSecurityConfig{
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests ->
                         requests
-                                .requestMatchers(HttpMethod.PATCH,"/api/v1/**").hasAuthority(RoleEnum.ADMIN.name())
-                                .requestMatchers(HttpMethod.PUT,"/api/v1/**").hasAuthority(RoleEnum.ADMIN.name())
-                                .requestMatchers(HttpMethod.DELETE,"/api/v1/**").hasAuthority(RoleEnum.ADMIN.name())
+                                .requestMatchers(HttpMethod.PATCH,LINK_API).hasAuthority(RoleEnum.ADMIN.name())
+                                .requestMatchers(HttpMethod.PUT,LINK_API).hasAuthority(RoleEnum.ADMIN.name())
+                                .requestMatchers(HttpMethod.DELETE,LINK_API).hasAuthority(RoleEnum.ADMIN.name())
                                 .requestMatchers(HttpMethod.POST,"/api/v1/logout").hasAnyAuthority(RoleEnum.ADMIN.name(),RoleEnum.USER.name())
                                 .requestMatchers("/api/v1/signup", "/api/v1/login", "/api/v1/refreshToken", "/swagger-ui/**",  "/swagger-resources/**", "/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()
