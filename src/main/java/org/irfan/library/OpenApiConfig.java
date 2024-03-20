@@ -15,16 +15,16 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        String BEARER_AUTH = "bearerAuth";
+        String bearerAuth = "bearerAuth";
         return new OpenAPI()
                 .info(new Info().title("Library API")
                         .version("v1")
                         .description("API REST de gestion de livres"))
-                .components(new Components().addSecuritySchemes(BEARER_AUTH,
-                        new SecurityScheme().name(BEARER_AUTH)
+                .components(new Components().addSecuritySchemes(bearerAuth,
+                        new SecurityScheme().name(bearerAuth)
                                 .type(SecurityScheme.Type.HTTP)
                                 .scheme("bearer")
                                 .bearerFormat("JWT")))
-                .addSecurityItem(new SecurityRequirement().addList(BEARER_AUTH));
+                .addSecurityItem(new SecurityRequirement().addList(bearerAuth));
     }
 }

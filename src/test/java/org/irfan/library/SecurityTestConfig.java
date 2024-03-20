@@ -2,7 +2,6 @@ package org.irfan.library;
 
 import org.irfan.library.enums.RoleEnum;
 import org.irfan.library.filters.JwtTokenAuthenticationFilter;
-import org.irfan.library.services.JwtTokenService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Profile("test")
 public class SecurityTestConfig{
 
-    private final String LINK_API = "/api/v1/**";
+    private final String linkApi = "/api/v1/**";
 
     @Bean
     public JwtTokenAuthenticationFilter jwtAuthenticationFilter(){
@@ -36,9 +35,9 @@ public class SecurityTestConfig{
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests ->
                         requests
-                                .requestMatchers(HttpMethod.PATCH,LINK_API).hasAuthority(RoleEnum.ADMIN.name())
-                                .requestMatchers(HttpMethod.PUT,LINK_API).hasAuthority(RoleEnum.ADMIN.name())
-                                .requestMatchers(HttpMethod.DELETE,LINK_API).hasAuthority(RoleEnum.ADMIN.name())
+                                .requestMatchers(HttpMethod.PATCH, linkApi).hasAuthority(RoleEnum.ADMIN.name())
+                                .requestMatchers(HttpMethod.PUT, linkApi).hasAuthority(RoleEnum.ADMIN.name())
+                                .requestMatchers(HttpMethod.DELETE, linkApi).hasAuthority(RoleEnum.ADMIN.name())
                                 .requestMatchers(HttpMethod.POST,"/api/v1/logout").hasAnyAuthority(RoleEnum.ADMIN.name(),RoleEnum.USER.name())
                                 .requestMatchers("/api/v1/signup", "/api/v1/login", "/api/v1/refreshToken", "/swagger-ui/**",  "/swagger-resources/**", "/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()
