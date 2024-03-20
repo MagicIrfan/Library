@@ -1,6 +1,6 @@
 package org.irfan.library.services;
 
-import org.irfan.library.Model.TokenBlacklist;
+import org.irfan.library.model.TokenBlacklist;
 import org.irfan.library.dao.TokenBlacklistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package org.irfan.library.Model;
+package org.irfan.library.model;
 import jakarta.persistence.*;
 import lombok.*;
 

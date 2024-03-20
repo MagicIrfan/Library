@@ -1,6 +1,6 @@
 package org.irfan.library.dao;
 
-import org.irfan.library.Model.RefreshToken;
+import org.irfan.library.model.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

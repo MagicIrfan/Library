@@ -1,7 +1,7 @@
 package org.irfan.library.services;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.irfan.library.Model.BookType;
+import org.irfan.library.model.BookType;
 import org.irfan.library.dao.BookTypeRepository;
 import org.irfan.library.dto.BookTypeDTO;
 import org.irfan.library.exception.DuplicateDataException;

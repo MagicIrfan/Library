@@ -1,6 +1,6 @@
 package org.irfan.library.dao;
 
-import org.irfan.library.Model.BookType;
+import org.irfan.library.model.BookType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

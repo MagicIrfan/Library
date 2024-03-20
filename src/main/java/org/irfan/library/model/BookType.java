@@ -1,4 +1,4 @@
-package org.irfan.library.Model;
+package org.irfan.library.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,16 +8,15 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Role")
-public class Role {
+@Table(name = "BookType")
+public class BookType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(unique = true)
     private String name;
-
-    public Role(String name){
-        this.name=name;
+    public BookType(String name){
+        this.name = name;
     }
 }

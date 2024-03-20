@@ -1,7 +1,7 @@
 package org.irfan.library;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.irfan.library.Model.Author;
+import org.irfan.library.model.Author;
 import org.irfan.library.dao.AuthorRepository;
 import org.irfan.library.dto.AuthorDTO;
 import org.irfan.library.dto.request.CreateAuthorRequest;

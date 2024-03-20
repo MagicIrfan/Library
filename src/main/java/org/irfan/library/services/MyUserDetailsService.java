@@ -1,7 +1,6 @@
 package org.irfan.library.services;
 
-import org.irfan.library.Model.User;
-import org.irfan.library.dao.UserRepository;
+import org.irfan.library.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {

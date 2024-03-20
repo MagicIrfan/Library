@@ -1,7 +1,7 @@
 package org.irfan.library.controllers;
 
 import jakarta.validation.Valid;
-import org.irfan.library.Model.RefreshToken;
+import org.irfan.library.model.RefreshToken;
 import org.irfan.library.dto.JwtResponseDTO;
 import org.irfan.library.dto.request.LoginRequest;
 import org.irfan.library.dto.request.LogoutRequest;

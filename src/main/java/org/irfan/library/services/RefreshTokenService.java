@@ -1,10 +1,8 @@
 package org.irfan.library.services;
 
-import jakarta.persistence.EntityNotFoundException;
-import org.irfan.library.Model.RefreshToken;
-import org.irfan.library.Model.User;
+import org.irfan.library.model.RefreshToken;
+import org.irfan.library.model.User;
 import org.irfan.library.dao.RefreshTokenRepository;
-import org.irfan.library.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

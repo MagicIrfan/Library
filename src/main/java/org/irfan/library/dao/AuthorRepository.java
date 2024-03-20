@@ -1,8 +1,7 @@
 package org.irfan.library.dao;
 
 import jakarta.persistence.criteria.Predicate;
-import org.irfan.library.Model.Author;
-import org.irfan.library.Model.Book;
+import org.irfan.library.model.Author;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

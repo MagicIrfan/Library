@@ -1,11 +1,8 @@
 package org.irfan.library.services;
 
-import jakarta.persistence.EntityNotFoundException;
-import org.irfan.library.Model.Role;
-import org.irfan.library.Model.TokenBlacklist;
-import org.irfan.library.Model.User;
-import org.irfan.library.dao.TokenBlacklistRepository;
-import org.irfan.library.dao.UserRepository;
+import org.irfan.library.model.Role;
+import org.irfan.library.model.TokenBlacklist;
+import org.irfan.library.model.User;
 import org.irfan.library.dto.request.LogoutRequest;
 import org.irfan.library.enums.RoleEnum;
 import org.irfan.library.exception.DuplicateDataException;
@@ -19,8 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 public class AuthService {

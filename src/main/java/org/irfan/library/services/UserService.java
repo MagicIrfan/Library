@@ -1,7 +1,7 @@
 package org.irfan.library.services;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.irfan.library.Model.User;
+import org.irfan.library.model.User;
 import org.irfan.library.dao.UserRepository;
 import org.irfan.library.dto.UserDTO;
 import org.irfan.library.dto.request.EditUserRequest;

@@ -1,6 +1,6 @@
 package org.irfan.library.dao;
 
-import org.irfan.library.Model.TokenBlacklist;
+import org.irfan.library.model.TokenBlacklist;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
