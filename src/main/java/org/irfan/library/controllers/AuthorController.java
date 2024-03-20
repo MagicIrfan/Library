@@ -5,7 +5,7 @@ import org.irfan.library.dto.*;
 import org.irfan.library.dto.request.CreateAuthorRequest;
 import org.irfan.library.dto.request.EditAuthorRequest;
 import org.irfan.library.dto.response.OKMessageResponse;
-import org.irfan.library.services.AuthorService;
+import org.irfan.library.services.AuthorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +18,9 @@ import java.util.Optional;
 @CrossOrigin
 public class AuthorController {
 
-    private final AuthorService authorService;
+    private final AuthorServiceImpl authorService;
     @Autowired
-    public AuthorController(AuthorService authorService){
+    public AuthorController(AuthorServiceImpl authorService){
         this.authorService = authorService;
     }
 

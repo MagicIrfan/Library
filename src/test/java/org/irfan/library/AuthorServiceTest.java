@@ -6,7 +6,7 @@ import org.irfan.library.dao.AuthorRepository;
 import org.irfan.library.dto.AuthorDTO;
 import org.irfan.library.dto.request.CreateAuthorRequest;
 import org.irfan.library.dto.request.EditAuthorRequest;
-import org.irfan.library.services.AuthorService;
+import org.irfan.library.services.AuthorServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,13 +27,13 @@ class AuthorServiceTest {
     @Mock
     private AuthorRepository authorRepository;
     private ModelMapper modelMapper;
-    private AuthorService authorService;
+    private AuthorServiceImpl authorService;
 
     @BeforeEach
     void setUp() {
         // Initialisation des services
         modelMapper = new ModelMapper();
-        authorService = new AuthorService(authorRepository,modelMapper);
+        authorService = new AuthorServiceImpl(authorRepository,modelMapper);
     }
 
     @Test

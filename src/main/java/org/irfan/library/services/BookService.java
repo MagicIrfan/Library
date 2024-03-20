@@ -21,12 +21,12 @@ import java.util.Optional;
 @Service
 public class BookService {
     private final BookRepository bookRepository;
-    private final AuthorService authorService;
+    private final AuthorServiceImpl authorService;
     private final BookTypeService bookTypeService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public BookService(BookRepository bookRepository, AuthorService authorService, ModelMapper modelMapper, BookTypeService bookTypeService){
+    public BookService(BookRepository bookRepository, AuthorServiceImpl authorService, ModelMapper modelMapper, BookTypeService bookTypeService){
         this.bookRepository = bookRepository;
         this.authorService = authorService;
         this.modelMapper = modelMapper;

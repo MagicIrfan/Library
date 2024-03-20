@@ -10,7 +10,7 @@ import org.irfan.library.dao.BookTypeRepository;
 import org.irfan.library.dto.BookDTO;
 import org.irfan.library.dto.request.CreateBookRequest;
 import org.irfan.library.dto.request.EditBookRequest;
-import org.irfan.library.services.AuthorService;
+import org.irfan.library.services.AuthorServiceImpl;
 import org.irfan.library.services.BookService;
 import org.irfan.library.services.BookTypeService;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +32,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class BookServiceTest {
+class BookServiceTest {
 
     @Mock
     private BookRepository bookRepository;
@@ -42,14 +42,14 @@ public class BookServiceTest {
     private BookTypeRepository bookTypeRepository;
     private ModelMapper modelMapper;
     private BookService bookService;
-    private AuthorService authorService;
+    private AuthorServiceImpl authorService;
     private BookTypeService bookTypeService;
 
     @BeforeEach
     void setUp() {
         // Initialisation des services
         modelMapper = new ModelMapper();
-        authorService = new AuthorService(authorRepository,modelMapper);
+        authorService = new AuthorServiceImpl(authorRepository,modelMapper);
         bookTypeService = new BookTypeService(bookTypeRepository,modelMapper);
         bookService = new BookService(bookRepository, authorService, modelMapper, bookTypeService);
     }
